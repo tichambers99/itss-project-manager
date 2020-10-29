@@ -12,13 +12,15 @@ import { Layout } from 'antd';
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   return (
+    !isLogin ? <Login />
+    : 
     <Layout>
       <Sidebar />
-      <Layout className="site-layout" style={{ marginLeft: 200, background: '#fff' }}>
+      <Layout className="site-layout">
         <Navbar />
         <ContentHome />
       </Layout>
-    </Layout>
+    </Layout> 
   );
 }
 
