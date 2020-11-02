@@ -28,28 +28,28 @@ const Sidebar = () => {
       <div className="logo" />
       <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
         <Menu.Item key="1" icon={<UserOutlined />}>
-          nav 1
+          Dashboard
         </Menu.Item>
         <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-          nav 2
+          Video
         </Menu.Item>
         <Menu.Item key="3" icon={<UploadOutlined />}>
-          nav 3
+          Upload
         </Menu.Item>
         <Menu.Item key="4" icon={<BarChartOutlined />}>
-          nav 4
+          Chat
         </Menu.Item>
         <Menu.Item key="5" icon={<CloudOutlined />}>
-          nav 5
+          Cloud
         </Menu.Item>
         <Menu.Item key="6" icon={<AppstoreOutlined />}>
-          nav 6
+          App Store
         </Menu.Item>
         <Menu.Item key="7" icon={<TeamOutlined />}>
-          nav 7
+          Team
         </Menu.Item>
         <Menu.Item key="8" icon={<ShopOutlined />}>
-          nav 8
+          Shopping
         </Menu.Item>
       </Menu>
     </Sider>

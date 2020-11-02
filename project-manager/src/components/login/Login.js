@@ -1,7 +1,10 @@
-import React from 'react';
+import React from 'react'
+import NavbarLog from './NavbarLog';
 
 const Login = () => {
-  return null;
+  return (
+    <NavbarLog />
+  );
 }
 
 export default Login;
