@@ -16,6 +16,6 @@ code {
   background: #f5f5f8;
   margin-left: 200px;
 }
-  [data-theme="dark"] .site-layout .site-layout-background {
-    background: #141414;
-  }
+[data-theme="dark"] .site-layout .site-layout-background {
+  background: #141414;
+}

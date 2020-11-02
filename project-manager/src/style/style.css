@@ -15,18 +15,16 @@
 .site-layout-background {
   padding: 0;
 }
-.ant-btn {
-  text-transform: uppercase;
-  background-color: #5c77ff;
-  color: #fff;
-  font-weight: 500;
-  transition: all ease-in 0.4s;
-}
 .add-new-btn {
   margin-left: 2rem;
+  text-transform: uppercase;
+  background-color: #5c77ff !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+  transition: all ease-in 0.4s;
 }
 .ant-layout-header {
-  background: #fff;
+  background: #fff !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
