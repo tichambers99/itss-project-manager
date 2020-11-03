@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
-import { DownOutlined, UserOutlined, FolderOpenOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, FolderOpenOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 const { Search } = Input;
 
 function handleMenuClick(e) {
   alert('Click on menu item.');
-  console.log('click', e);
 }
 
 const menu = (
