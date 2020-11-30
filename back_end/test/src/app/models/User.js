@@ -22,6 +22,12 @@ User.prototype = {
             callback(result)
         });
     },
+    getProject: function(userId, callback) {
+        sql.query("Select project.leader_id,project.name,project.status,project.deadline,project.introduction from project inner join (user_project inner join user on user_project.user_id = user.id where user.id = ?)on project.id = user_project.project_id", [userId], function(err, result) {
+            if (err) throw err
+            callback(result);
+        });
+    }
 }
 
 

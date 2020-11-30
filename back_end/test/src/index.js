@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const sass = require('node-sass');
 const handlebars = require('express-handlebars');
 const jwt = require('jsonwebtoken');
-const port = 3000
+const port = 8080
 
 const route = require('./app/routes/index')
 const db = require('./app/config/db.config')
@@ -18,7 +18,7 @@ const app = express()
 app.use(express.static(path.join(__dirname, 'public')))
     // lay ra du lieu tu js ve
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser("K2L"));
 // tao ra body_paser de lay duoc du lieu 
 app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', handlebars({ extname: '.hbs' }));
