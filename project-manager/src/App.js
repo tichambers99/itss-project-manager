@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import ContentHome from './components/home/Content';
 import Login from './components/login/Login';
 import Sidebar from './components/home/Sidebar';
-import SignUp from './components/login/SignUp'; 
 import { Layout } from 'antd';
 
 import './App.css';
