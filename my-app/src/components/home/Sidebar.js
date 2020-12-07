@@ -1,58 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
   TeamOutlined,
   UserOutlined,
-  UploadOutlined,
-  VideoCameraOutlined,
+  RightCircleOutlined
 } from '@ant-design/icons';
+
+import {CSSTransition} from 'react-transition-group';
 
 import '../../style/style.css';
 
 const { Sider } = Layout;
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <Sider
-      style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        left: 0,
-      }}
+    <CSSTransition
+      in={props.sidebarHide}
+      timeout={300}
+      classNames="sidebar"
+      unmountOnExit
     >
-      <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-        <Menu.Item key="1" icon={<UserOutlined />}>
-          Dashboard
-        </Menu.Item>
-        <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-          Video
-        </Menu.Item>
-        <Menu.Item key="3" icon={<UploadOutlined />}>
-          Upload
-        </Menu.Item>
-        <Menu.Item key="4" icon={<BarChartOutlined />}>
-          Chat
-        </Menu.Item>
-        <Menu.Item key="5" icon={<CloudOutlined />}>
-          Cloud
-        </Menu.Item>
-        <Menu.Item key="6" icon={<AppstoreOutlined />}>
-          App Store
-        </Menu.Item>
-        <Menu.Item key="7" icon={<TeamOutlined />}>
-          Team
-        </Menu.Item>
-        <Menu.Item key="8" icon={<ShopOutlined />}>
-          Shopping
-        </Menu.Item>
-      </Menu>
-    </Sider>
+      <Sider
+        width={window.screen.width <= 576 ? 100 : 180}
+        collapsible 
+        collapsed={collapsed} 
+        onCollapse={() => setCollapsed(!collapsed)}
+      >
+        <div className="logo" />
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu.Item key="1" icon={<UserOutlined />}>
+            Dashboard
+          </Menu.Item>
+          <Menu.Item key="2" icon={<TeamOutlined />}>
+            Team
+          </Menu.Item>
+          <Menu.Item key="3" icon={<RightCircleOutlined />}>
+            About
+          </Menu.Item>
+        </Menu>
+      </Sider>
+    </CSSTransition>  
   );
 }
 

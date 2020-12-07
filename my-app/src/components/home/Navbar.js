@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
-import { UserOutlined, FolderOpenOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, FolderOpenOutlined, LogoutOutlined, BarsOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -23,8 +23,10 @@ const menu = (
   </Menu>
 );
 
-const Navbar = () => {
+const Navbar = (props) => {
   const [visible, setVisible] = useState(false);
+  const [sidebarHide, setSidebarHide] = useState(true);
+  // let sidebarHide = false;
   const showModal = () => {
     setVisible(true);
   };
@@ -37,11 +39,21 @@ const Navbar = () => {
     setVisible(false);
   };
 
+  const handleBarClick = () => {
+    // if (window.screen.width <= 768) {
+      setSidebarHide(!sidebarHide)
+      props.onNavbar(!sidebarHide)
+    // }
+  }
+
   return (
     <Header className="site-layout-background">
-      <Button className="add-new-btn" onClick={() => showModal()}>
-        Add new
-      </Button>
+      <div style={{display: "flex", alignItems: "center"}}>
+        <BarsOutlined  onClick={() => handleBarClick()} />
+        <Button className="add-new-btn" onClick={() => showModal()}>
+          Add new
+        </Button>
+      </div>
       <Modal
         title="Add new project"
         visible={visible}
@@ -50,7 +62,7 @@ const Navbar = () => {
       >
         <Input placeholder="Enter title" />
       </Modal>
-      <div style={{display: "flex", alignItems: "center"}}>
+      <div style={{display: "flex", alignItems: "center", marginLeft: "1rem"}}>
         <Search placeholder="input search text" enterButton className="search-input" />
         <Dropdown overlay={menu} placement="bottomRight" arrow>
           <div className="avatar">
