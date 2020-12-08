@@ -22,6 +22,7 @@ function route(app) {
     app.use('/', homeRouter)
     app.use('/search', searchRouter);
     app.use('/project', projectRouter)
+
     app.use('/private', (req, res, next) => {
         try {
             var token = req.cookies.token;

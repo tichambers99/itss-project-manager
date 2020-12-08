@@ -10,30 +10,6 @@ var cookieParser = require('cookie-parser')
 // trang home cua user
 class HomeController {
 
-// <<<<<<< HEAD
-//     showInfomationUser(req, res, next) {
-// =======
-//     //  profile of user
-//     showProfileOfUser(req, res, next) {
-// >>>>>>> 10aecf0cd65be61a2c678d89354b610f9c12ca44
-//         if (req.signedCookies.userId) {
-//             user.getProfileOfUser(req.signedCookies.userId, function(result) {
-//                 if (result) {
-//                     return res.json({
-//                         Profile: result
-//                     })
-
-//                 } else {
-//                     return res.json({
-//                         message: error
-//                     })
-//                 }
-//             })
-//         } else {
-//             return res.send("Error")
-//         }
-//     }
-
     // Project 
     showInfomationProject(req, res, next) {
         if (req.signedCookies.userId) {
@@ -42,6 +18,7 @@ class HomeController {
                     return res.json({
                         Project: result,
                     })
+
                 } else {
                     return res.json("Error")
                 }
