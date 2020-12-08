@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const sass = require('node-sass');
 const handlebars = require('express-handlebars');
 const jwt = require('jsonwebtoken');
-const port = 8080
+const port = 3000
 
 const route = require('./app/routes/index')
 const db = require('./app/config/db.config')
