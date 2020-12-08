@@ -1,11 +1,11 @@
 *************************** PROJECT MANAGE: DATABASE ******************************
 #Cấu tạo:
-	 $ user			: id(PK), username, pass, deleted
+	 $ user				: id(PK), username, pass, deleted
  	 $ profile			: date, email, address, github, user_id (FK)
 	 $ project			: id(PK), leader_id, name, status, work_counts, deadline, introduction, deleted, created_date
 	 $ user_project		: joined_date, leader, user_id (FK), project_id(FK)
-	 $ work			: id(PK), name, status, introduction, deadline, deleted, created_date
-	 $ comment		: int(PK), content, title, deleted, date, user_id (FK), work_id (FK), work_project_id(FK)
+	 $ work				: id(PK), name, status, introduction, deadline, deleted, created_date
+	 $ comment			: int(PK), content, title, deleted, date, user_id (FK), work_id (FK), work_project_id(FK)
 	 $ user_work		: work_code, user_id(FK), work_id(FK), work_project_id(FK)
 	 $ leader_submit_work	: submited, title, content, deleted, user_id (FK), work_id(FK), work_project_id(20)
 

@@ -17,9 +17,10 @@ const app = express()
     // app.use(morgan('combined'))
 app.use(express.static(path.join(__dirname, 'public')))
     // lay ra du lieu tu js ve
+    // static file
 app.use(express.json());
 app.use(cookieParser("K2L"));
-// tao ra body_paser de lay duoc du lieu 
+    // tao ra body_paser de lay duoc du lieu 
 app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', handlebars({ extname: '.hbs' }));
 app.set('view engine', '.hbs');

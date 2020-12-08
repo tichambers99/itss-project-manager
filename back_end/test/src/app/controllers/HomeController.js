@@ -8,7 +8,6 @@ var cookieParser = require('cookie-parser')
 // trang home cua user
 class HomeController {
 
-
     showInfomationUser(req, res, next) {
         if (req.signedCookies.userId) {
 
@@ -25,11 +24,10 @@ class HomeController {
             })
 
         } else {
-            return res.send("Erro")
+            return res.send("Error")
         }
 
     }
-
 }
 
 module.exports = new HomeController

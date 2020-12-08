@@ -9,13 +9,12 @@ class AuthController {
         res.render('./auth')
     }
 
-
     login(req, res) {
         var username = req.body.email;
         var password = req.body.password;
         user.find(username, function(result) {
             if (result) {
-                if (password == result.password) {
+                if (password == result.pass) {
                     var token = jwt.sign(result.username, privateKey);
                     res.cookie("userId", result.id, {
                         signed: true
