@@ -9,7 +9,6 @@ class AuthController {
         res.render('./auth')
     }
 
-
     login(req, res) {
         var username = req.body.email;
         var password = req.body.password;

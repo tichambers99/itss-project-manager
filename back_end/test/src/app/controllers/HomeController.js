@@ -10,26 +10,6 @@ var cookieParser = require('cookie-parser')
 // trang home cua user
 class HomeController {
 
-    //  profile of user
-    showProfileOfUser(req, res, next) {
-        if (req.signedCookies.userId) {
-            user.getProfileOfUser(req.signedCookies.userId, function(result) {
-                if (result) {
-                    return res.json({
-                        Profile: result
-                    })
-
-                } else {
-                    return res.json({
-                        message: error
-                    })
-                }
-            })
-        } else {
-            return res.send("Error")
-        }
-    }
-
     // Project 
     showInfomationProject(req, res, next) {
         if (req.signedCookies.userId) {
@@ -38,6 +18,7 @@ class HomeController {
                     return res.json({
                         Project: result,
                     })
+
                 } else {
                     return res.json("Error")
                 }
@@ -45,6 +26,7 @@ class HomeController {
         } else
             return res.send("Error")
     }
+
     showInfomationTaskofProject(req, res, next) {
         if (req.signedCookies.userId) {
             project.getTask(req.params.id, function(result) {
@@ -60,10 +42,6 @@ class HomeController {
             return res.send("Error")
         }
     }
-
-
-
-
 }
 
 module.exports = new HomeController
