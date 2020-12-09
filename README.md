@@ -6,6 +6,7 @@ thltm project at school
 
 # server
  - install npm package with: 
+ 
          npm install
  - make folder config in app and add file db.config.js with content:
  
@@ -16,6 +17,7 @@ thltm project at school
               DB: "your_database"
           };
   - run server with command: 
+  
         npm start
-  -server will run on: http://localhost:3000/
+  - server will run on: http://localhost:3000/
  
