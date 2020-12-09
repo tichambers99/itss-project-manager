@@ -1,3 +1,4 @@
+const { signedCookies } = require('cookie-parser');
 const User = require('../models/User')
 const user = new User()
 class UserController{
@@ -20,6 +21,24 @@ class UserController{
                 message: "Error"
             })
         }
+    }
+
+    viewEditInfor(req, res){
+        res.render('./editUser.hbs');
+    }
+
+    editInfor(req, res){
+            if(req.signedCookies.userId){
+                user.updateInfor(req.body, req.signedCookies.userId, function(result){
+                    if (result) {
+                        return res.json({ message: "Update success" })
+                    } else {
+                        return res.json({ message: "Failed to update" })
+                    }
+                })
+            } else{
+                return res.json({ message: "You need login to update" })
+            }
     }
 }
 

@@ -7,13 +7,6 @@ const projectRouter = require('./create')
 var cookieParser = require('cookie-parser')
 
 
-/*
-/users/:user_id(slug) : in ra thong tin cua nguoi co id
-/users/edit: chinh sua thong tin
-/projects/
-
-*/
-
 function route(app) {
 
     app.use('/sign-in', authRouter);
