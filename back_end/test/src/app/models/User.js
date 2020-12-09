@@ -39,6 +39,15 @@ User.prototype = {
             callback(result[0]);
 
         })
+    },
+
+    updateInfor: function(reqBody, userId,callback){
+        //var values =[reqBody.mail, reqBody.date, reqBody.address, reqBody.github]
+        sql.query("Update profiles SET date = ?, email = ?, address = ?, github = ? WHERE user_id = ?", [reqBody.date, reqBody.mail, reqBody.address, reqBody.github, userId],  function(err, result){
+            if (err) throw err
+
+            callback(result);
+        })
     }
 }
 
