@@ -4,6 +4,9 @@ import Navbar from './components/home/Navbar';
 import ContentHome from './components/home/Content';
 import Login from './components/login/Login';
 import Sidebar from './components/home/Sidebar';
+import ProfilePage from './components/user/ProfilePage';
+import EditProfilePage from './components/user/EditProfilePage';
+
 import { Layout } from 'antd';
 
 import {LoginContext} from './components/contexts/login';
@@ -37,6 +40,24 @@ function App() {
                 </Layout>
               </Layout>
             </Route>
+            <Route exact path = "/profile">
+                    <Layout>
+                        <Sidebar sidebarHide={sidebarHide}/>
+                        <Layout className = "site-layout" >
+                            <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                            <ProfilePage idUser = "1"/>
+                        </Layout> 
+                    </Layout>
+                </Route>
+                <Route exact path = "/profile/edit">
+                    <Layout>
+                        <Sidebar sidebarHide={sidebarHide}/>
+                        <Layout className = "site-layout" >
+                            <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                            <EditProfilePage idUser = "1"/>
+                        </Layout> 
+                    </Layout>
+                </Route>
           </Switch>
         </div>
       </LoginContext.Provider>
