@@ -11,7 +11,7 @@ import {
   VideoCameraOutlined,
 } from '@ant-design/icons';
 
-import '../../style/style.css';
+import '../style/style.css';
 
 const { Sider } = Layout;
 
