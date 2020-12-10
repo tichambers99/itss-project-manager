@@ -10,6 +10,10 @@ class TableInfo extends Component {
                     <td className="text-primary">{this.props.name}</td>
                     </tr>
                     <tr>        
+                    <td><strong>Birthday</strong></td>
+                    <td className="text-primary">{this.props.birthday}</td>
+                    </tr>
+                    <tr>        
                     <td><strong>Email</strong></td>
                     <td className="text-primary">{this.props.mail}</td>
                     </tr>
