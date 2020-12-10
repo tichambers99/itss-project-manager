@@ -259,3 +259,16 @@
   }
 }
 
+/*profile*/
+.inf-page{
+  height: 700px;
+  margin-top: 150px;
+}
+
+.sizeAva{
+width: 300px;
+height: 300px;
+border-radius: 50%;
+}
+
+
