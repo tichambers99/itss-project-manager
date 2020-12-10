@@ -34,7 +34,7 @@ class ProfilePage extends Component {
               <div className="inf-page">
                 <Row>
                     <Col span={6} offset={2} className="text-center">
-                      <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src="https://bootdey.com/img/Content/avatar/avatar7.png" data-original-title="Usuario" /> 
+                      <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={rs.avatar} data-original-title="Usuario" /> 
                     </Col>
                     <Col span={13}>
                       <Row>
@@ -50,7 +50,7 @@ class ProfilePage extends Component {
                       </Row>
                       <TableInfo name={rs.name} mail = {rs.email}
                                  phone = {rs.phone} address= {rs.address}
-                                 github = {rs.github} />
+                                 github = {rs.github} birthday = {rs.date} />
                   </Col>
                 </Row>
               </div>

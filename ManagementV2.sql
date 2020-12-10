@@ -56,11 +56,13 @@ DROP TABLE IF EXISTS `profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `profiles` (
+  `user_id` int NOT NULL,
   `date` datetime NOT NULL,
   `email` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `github` varchar(255) DEFAULT NULL,
-  `user_id` int NOT NULL,
+  `avatar` longtext,
+  `phone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_profiles_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -72,7 +74,7 @@ CREATE TABLE `profiles` (
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` VALUES ('1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',1),('1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',2),('1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',3),('1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',4);
+INSERT INTO `profiles` VALUES (1,'1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',NULL,NULL),(2,'1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',NULL,NULL),(3,'1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',NULL,NULL),(4,'1999-05-08 00:00:00','canducloi99@gmail.com','số nhà 4d','loiin99@gmail.com',NULL,NULL);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,6 +125,7 @@ CREATE TABLE `task` (
   `deleted` tinyint NOT NULL,
   `created_date` date NOT NULL,
   `project_id` int NOT NULL,
+  `image` longtext,
   PRIMARY KEY (`id`,`project_id`),
   KEY `fk_task_project1_idx` (`project_id`),
   CONSTRAINT `fk_task_project1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
@@ -135,7 +138,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (1,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',1),(2,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',1),(3,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',1),(4,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',2),(5,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',2),(6,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',2),(7,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',3),(8,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',3),(9,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',3);
+INSERT INTO `task` VALUES (1,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',1,NULL),(2,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',1,NULL),(3,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',1,NULL),(4,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',2,NULL),(5,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',2,NULL),(6,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',2,NULL),(7,'Xây dựng ý tưởng',1,'introduction','2020-11-10',0,'2020-11-01',3,NULL),(8,'Dựng database',1,'introduction','2020-11-30',0,'2020-11-10',3,NULL),(9,'Dựng front-end',0,'introduction','2020-12-20',0,'2020-11-20',3,NULL);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,4 +212,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-03 13:26:11
+-- Dump completed on 2020-12-11  0:05:28
