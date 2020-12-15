@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt')
 function User() {};
 
 User.prototype = {
-    find: function(user = null, callback) {
-        sql.query("Select * from user  where username = ?", [user], function(err, result) {
+    find: function(user, callback) {
+        sql.query("Select * from user where username = ?", [user], function(err, result) {
             if (err) throw err
 
             callback(result[0]);
@@ -18,7 +18,7 @@ User.prototype = {
     create: function(body, callback) {
         let pwd = body.password
         body.password = bcrypt.hashSync(pwd, 10);
-        sql.query("Insert into user(username, password) values (?,?)", [body.email, body.password], function(err, result) {
+        sql.query("Insert into user(username, pass, deleted) values (?,?,?)", [body.username, body.password, 0], function(err, result) {
             if (err) throw err
             callback(result)
         });

@@ -10,8 +10,7 @@ class AuthController {
     }
 
     login(req, res) {
-        var username = req.body.email;
-        var password = req.body.password;
+        const { username, password } = req.body;
         user.find(username, function(result) {
             if (result) {
                 if (password == result.pass) {
@@ -20,17 +19,11 @@ class AuthController {
                         signed: true
                     })
 
-                    return res.json({
-                        message: "Login Successed",
-                        token: token
-                    })
-
+                    return res.status(200).send();
                 }
 
             }
-            res.send("Loggin  failed");
-
-
+            res.status(500).send("Login failed");
         });
 
     }
