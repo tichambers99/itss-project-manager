@@ -54,7 +54,7 @@ function App() {
                         <Sidebar sidebarHide={sidebarHide}/>
                         <Layout className = "site-layout" >
                             <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                            <EditProfilePage idUser = "1"/>
+                            <EditProfilePage idUser = "2"/>
                         </Layout> 
                     </Layout>
                 </Route>

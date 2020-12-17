@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
 import { UserOutlined, FolderOpenOutlined, LogoutOutlined, BarsOutlined } from '@ant-design/icons';
+import {
+  NavLink,
+}from 'react-router-dom';
 
 const { Header } = Layout;
 const { Search } = Input;
 
-function handleMenuClick(e) {
-  alert('Click on menu item.');
-}
-
 const menu = (
-  <Menu onClick={handleMenuClick} className="ava-dropdown">
+  <Menu className="ava-dropdown">
     <Menu.Item key="1" icon={<UserOutlined />}>
-      Profile
+      <NavLink to ='/profile'>Profile</NavLink>
     </Menu.Item>
     <Menu.Item key="2" icon={<FolderOpenOutlined />}>
-      Project
+      <NavLink to ='/'>Project</NavLink>
     </Menu.Item>
     <Menu.Item key="3" icon={<LogoutOutlined />}>
-      Logout
+      <NavLink to ='/sign-in'>LogOut</NavLink>
     </Menu.Item>
   </Menu>
 );

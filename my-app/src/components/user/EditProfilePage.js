@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col, Upload, Button } from 'antd';
 import dataUser from '../../fakeData/user.json';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+
+import FormEdit from './FormEdit.js';
+
 const { Content } = Layout;
 
 const dummyRequest = ({ file, onSuccess }) => {
@@ -23,10 +20,8 @@ const getBase64 = (img, callback) => {
     }
 }
 
-
 class EditProfilePage extends Component {
 
-   
     constructor(props){
         super(props);
         this.state = {
@@ -90,49 +85,8 @@ class EditProfilePage extends Component {
                         </Upload>
                     </Col>
                     <Col span={13}>
-                        <Row >
-                            <Col span={16} className="text-left">
-                            <h1>Edit</h1>
-                            </Col>
-                            <Col span={8} className="text-right" style={{marginTop: '5px'}}>
-                                <Link to = "/profile" className="btn btn-outline-primary" href="abc.com" role="button">
-                                    <i className="fas fa-save"></i>  Save
-                                </Link>
-                            </Col>
-                        </Row>
-                        <form>
-                            <div className="form-group">
-                                <Col span={8}>First name</Col>
-                                <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.name} />
-                                </Col>
-                            </div>
-                            <div className="form-group">
-                                <Col span={6}>Email</Col>
-                                <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.email} />
-                                </Col>
-                            </div>
-                            <div className="form-group">
-                                <Col span={6}>Phone</Col>
-                                <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.phone} />
-                                </Col>
-                            </div>
-                            <div className="form-group">
-                                <Col span={6}>Address:</Col>
-                                <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.address} />
-                                </Col>
-                            </div>
-                            <div className="form-group">
-                                <Col span={6}>Github:</Col>
-                                <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.github} />
-                                </Col>
-                            </div>
-                        </form>
-                  </Col>
+                        <FormEdit info = {rs}/>
+                    </Col>
                 </Row>
               </div>
           </Content>
