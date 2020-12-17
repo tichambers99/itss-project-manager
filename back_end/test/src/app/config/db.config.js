@@ -1,6 +1,6 @@
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "abc",
-    DB: "project_management"
+  HOST: "localhost",
+  USER: "sabo",
+  PASSWORD: "ilookforme",
+  DB: "pro_man"
 };

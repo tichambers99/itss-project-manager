@@ -3,16 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 const user = new User()
 class RegisterController {
-
-
     index(req, res) {
         res.render('./auth')
     }
 
     register(req, res) {
-        var username = req.body.email;
-        var password = req.body.password;
-
+        const { username, password } = req.body;
+        
         if (username && password) {
             user.find(username, function(result) {
                 if (result) {

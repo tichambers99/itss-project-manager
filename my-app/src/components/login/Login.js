@@ -1,10 +1,14 @@
-import React, {useState} from 'react';
-import { Input, Space, Button, Modal, Form, Checkbox, Select } from 'antd';
-import { Link } from "react-router-dom";
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import React, {useState, useContext} from 'react';
+import { Input, Space, Button, Modal, Form, Checkbox, Select, Tooltip } from 'antd';
+import { Link, Redirect, Route } from "react-router-dom";
+import { UserOutlined, LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import logo from '../../images/logo.png';
 
+import {LoginContext} from '../contexts/login';
+
 import '../../style/log.css';
+
+const axios = require('axios');
 
 const { Option } = Select;
 
@@ -42,6 +46,11 @@ const tailFormItemLayout = {
 const Login = () => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
+  const [isLogin, setIsLogin] = useContext(LoginContext);
+
+  let loginInfo = {}
+  let signUpInfo = {};
+
   const showModal = () => {
     setVisible(true);
   };
@@ -62,8 +71,52 @@ const Login = () => {
     </Form.Item>
   );
 
+  const submitData = () => {
+    axios.post('http://localhost:8000/sign-in', {
+      ...loginInfo,
+    }, 
+    {
+      withCredentials: true,
+      credentials: 'include'
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        setIsLogin(true);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(err.response.data.message);
+    })
+  }
+
+  const handleSignUp = () => {
+    // setLoading(true);
+    if (signUpInfo.phoneNumber && signUpInfo.phoneNumber.length === 9) {
+      signUpInfo.phoneNumber = "0" + signUpInfo.phoneNumber;
+    }
+    axios.post('http://localhost:8000/register', {
+      ...signUpInfo
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        setVisible(false);
+        console.log(res.data.message);
+      }
+    })
+    .catch((err) => {
+      setVisible(false);
+      alert(err);
+    })
+  }
+
   return (
     <div className="login">
+      <Route>
+        {
+          !isLogin ? <Redirect to="/sign-in" /> : <Redirect to="/" />
+        }
+      </Route>
         <img src={logo} /> 
       <Space direction="vertical" className="form-login">
         <Form
@@ -86,7 +139,8 @@ const Login = () => {
               size="large" 
               prefix={<UserOutlined 
               className="site-form-item-icon" />} 
-              placeholder="Username" 
+              placeholder="Username"
+              onChange={(e) => {loginInfo.username = e.target.value}} 
             />
           </Form.Item>
           <Form.Item
@@ -103,6 +157,7 @@ const Login = () => {
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
+              onChange={(e) => {loginInfo.password = e.target.value}}
             />
           </Form.Item>
           <Form.Item className="form-checkbox-forgot">
@@ -116,7 +171,12 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item className="form-login-register">
-            <Button type="primary" htmlType="submit" className="btn-signin login-form-button">
+            <Button 
+              type="primary" 
+              htmlType="submit" 
+              className="btn-signin login-form-button"
+              onClick={submitData}
+            >
               Log in
             </Button> 
             <span onClick={() => showModal()} className="form-subspan">
@@ -138,6 +198,20 @@ const Login = () => {
                 scrollToFirstError
               >
                 <Form.Item
+                  name="username"
+                  label={
+                    <span>
+                      Username&nbsp;
+                      <Tooltip title="What do you want others to call you?">
+                        <QuestionCircleOutlined />
+                      </Tooltip>
+                    </span>
+                  }
+                  rules={[{ required: true, message: 'Please input your username!', whitespace: true }]}
+                >
+                  <Input onChange={(e) => {signUpInfo.username = e.target.value}} />
+                </Form.Item>
+                <Form.Item
                   name="email"
                   label="E-mail"
                   rules={[
@@ -151,7 +225,7 @@ const Login = () => {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input onChange={(e) => {signUpInfo.email = e.target.value}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -165,7 +239,7 @@ const Login = () => {
                   ]}
                   hasFeedback
                 >
-                  <Input.Password />
+                  <Input.Password onChange={(e) => {signUpInfo.password = e.target.value}}/>
                 </Form.Item>
 
                 <Form.Item
@@ -207,6 +281,7 @@ const Login = () => {
                     style={{
                       width: '100%',
                     }}
+                    onChange={(e) => {signUpInfo.phoneNumber = e.target.value}}
                   />
                 </Form.Item>
 
@@ -236,6 +311,7 @@ const Login = () => {
                     type="primary" 
                     htmlType="submit"
                     style={{marginLeft: "2rem"}}
+                    onClick={handleSignUp}
                   >
                     Register
                   </Button>
