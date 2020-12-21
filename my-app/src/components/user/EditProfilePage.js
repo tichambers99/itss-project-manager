@@ -7,6 +7,9 @@ import {
     Route,
     Link
 } from "react-router-dom";
+
+const axios = require('axios')
+
 const { Content } = Layout;
 
 const dummyRequest = ({ file, onSuccess }) => {
@@ -23,67 +26,112 @@ const getBase64 = (img, callback) => {
     }
 }
 
-
 class EditProfilePage extends Component {
-
-   
     constructor(props){
         super(props);
         this.state = {
-          data : dataUser,
-          curAvatar : 'https://bootdey.com/img/Content/avatar/avatar7.png',
+          user: {},
           selectedFile : null,
-          selectedFileList: []
+          selectedFileList: [],
+          loading: false    // for button loading
         }
     }
 
+    componentDidMount() {
+        axios.get('http://localhost:8000/users',
+        {
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .then((res) => {
+          this.setState({
+            user: {
+                ...res.data.result[0],
+                date: res.data.result[0].date.slice(0, 10)
+            }
+          })
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err)
+        })
+      }
+
     changeAva = () => {
        this.setState({
-           curAvatar :  this.state.selectedFile
+            user:  {
+               ...this.state.user,
+               avatar: this.state.selectedFile
+            }
        });
     }
     
-    onChange = info => {
-        
+    onChange = info => {   
         switch (info.file.status) {
-          case "uploading":
+            case "uploading":
                 this.setState({
                     selectedFileList : [info.file]
                 });
                 break;
-          case "done":
+            case "done":
                 this.setState({
                         selectedFile : info.file,
                         selectedFileList : [info.file]
                 });
                 getBase64(info.file.originFileObj, curAvatar =>
                     this.setState({
-                        curAvatar
-                    }),
+                        user:  {
+                           ...this.state.user,
+                           avatar: curAvatar
+                        }
+                   })
                 );
                 break;
-          default:
+            default:
                 this.setState({
                     selectedFile : null,
                     selectedFileList : []
                 });
         }
     }
+
+    handleEditInfor = () => {
+        this.setState({
+            loading: true
+        });
+        axios.post('http://localhost:8000/users/edit',
+        {
+            ...this.state.user
+        },
+        {
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .then((res) => {
+          alert(res.data.message);
+          this.setState({
+            loading: false
+          })
+        })
+        .catch((err) => {
+          this.setState({
+            loading: false
+          })
+          console.log(err);
+          alert(err)
+        })
+    }
     
     render() {
-        var rs;
-        this.state.data.map((value, key) => {
-          if(key + 1 == this.props.idUser){
-            rs = value;
-            return 0;
-          }
-        })
+        const { avatar, username, date, email, phone, address, github } = this.state.user;
+        const { user } = this.state;
+        
         return (
             <Content>
               <div className="inf-page">
                 <Row>
                     <Col span={6} offset={2} className="text-center">
-                        <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={this.state.curAvatar} data-original-title="Usuario" /> 
+                        { avatar && <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={user.avatar} data-original-title="Usuario" /> }
                         <Upload fileList={this.state.selectedFileList} customRequest={dummyRequest}
                          onChange={this.onChange} >
                             <Button >Choose File</Button>
@@ -95,40 +143,82 @@ class EditProfilePage extends Component {
                             <h1>Edit</h1>
                             </Col>
                             <Col span={8} className="text-right" style={{marginTop: '5px'}}>
-                                <Link to = "/profile" className="btn btn-outline-primary" href="abc.com" role="button">
-                                    <i className="fas fa-save"></i>  Save
-                                </Link>
+                                <Button 
+                                    type="primary"
+                                    loading={this.state.loading}
+                                    onClick={this.handleEditInfor}
+                                    href="/profile"
+                                >
+                                    <i className="fas fa-save" style={{marginRight: "0.25em"}}></i>Save
+                                </Button>
                             </Col>
                         </Row>
                         <form>
                             <div className="form-group">
-                                <Col span={8}>First name</Col>
+                                <Col span={8}>Name</Col>
                                 <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.name} />
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={username} 
+                                        onChange={(e) => user.username = e.target.value}
+                                        
+                                    />
+                                </Col>
+                            </div>
+                            <div className="form-group">
+                                <Col span={8}>Birthday</Col>
+                                <Col span={24}>
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={date} 
+                                        onChange={(e) => user.date = e.target.value}
+                                    />
                                 </Col>
                             </div>
                             <div className="form-group">
                                 <Col span={6}>Email</Col>
                                 <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.email} />
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={email} 
+                                        onChange={(e) => user.email = e.target.value}
+                                    />
                                 </Col>
                             </div>
                             <div className="form-group">
                                 <Col span={6}>Phone</Col>
                                 <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.phone} />
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={phone} 
+                                        onChange={(e) => user.phone = e.target.value}
+                                    />
                                 </Col>
                             </div>
                             <div className="form-group">
                                 <Col span={6}>Address:</Col>
                                 <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.address} />
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={address} 
+                                        onChange={(e) => user.address = e.target.value}
+                                    />
                                 </Col>
                             </div>
                             <div className="form-group">
                                 <Col span={6}>Github:</Col>
                                 <Col span={24}>
-                                    <input className="form-control" type="text" defaultValue={rs.github} />
+                                    <input 
+                                        className="form-control" 
+                                        type="text" 
+                                        defaultValue={github} 
+                                        onChange={(e) => user.github = e.target.value}
+                                    />
                                 </Col>
                             </div>
                         </form>

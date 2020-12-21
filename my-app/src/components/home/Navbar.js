@@ -49,6 +49,8 @@ const Navbar = (props) => {
         .catch((err) => {
           alert(err);
         })
+    } else if (e.key === '1') {
+      window.location.href = '/profile';
     }
   }
 

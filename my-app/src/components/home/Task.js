@@ -87,7 +87,7 @@ const Task = (props) => {
             <Card
               key={key}
               className="card"
-              onClick={(e, value=key+1) => showModal(e, value)}
+              onClick={(e, value=task.id+1) => showModal(e, value)}
               cover={
                 <img
                   alt="example"

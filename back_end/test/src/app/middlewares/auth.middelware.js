@@ -19,11 +19,4 @@ module.exports.requireAuth = function(req, res, next) {
     console.log(e)
     return res.status(401).send()
   }
-
-	// const foundUser = user.findUserbyId({ id: req.signedCookies.userId});
-	
-	// if (!foundUser) {
-	// 	res.status(401).send()
-	// 	return;
-	// }
 }

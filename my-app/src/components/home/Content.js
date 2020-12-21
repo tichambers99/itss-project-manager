@@ -46,7 +46,7 @@ const ContentHome = () => {
   return (
     <div>
       <Modal
-        title="Authentication needed!"
+        title="Authentication required!"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}

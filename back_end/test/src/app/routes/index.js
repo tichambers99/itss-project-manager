@@ -11,7 +11,7 @@ function route(app) {
     app.use('/auth', authRouter);
     app.use('/users', userRouter);
     app.use('/register', registerRouter);
-    app.use('/', authMiddleware.requireAuth, homeRouter)
+    app.use('/project', authMiddleware.requireAuth, homeRouter)
     app.use('/search', authMiddleware.requireAuth, searchRouter);
     app.use('/create', authMiddleware.requireAuth, createRouter)
 }
