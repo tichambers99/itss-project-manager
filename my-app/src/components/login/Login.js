@@ -4,7 +4,7 @@ import { Link, Redirect, Route } from "react-router-dom";
 import { UserOutlined, LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import logo from '../../images/logo.png';
 
-import {LoginContext} from '../contexts/login';
+import { LoginContext } from '../contexts/login';
 
 import '../../style/log.css';
 
@@ -72,7 +72,7 @@ const Login = () => {
   );
 
   const submitData = () => {
-    axios.post('http://localhost:8000/sign-in', {
+    axios.post('http://localhost:8000/auth/sign-in', {
       ...loginInfo,
     }, 
     {

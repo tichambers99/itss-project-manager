@@ -1,10 +1,7 @@
 const path = require('path');
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
-const sass = require('node-sass');
 const handlebars = require('express-handlebars');
-const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const port = 8000
 
@@ -30,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
 app.use(cookieParser("K2L"));
     // tao ra body_paser de lay duoc du lieu 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', handlebars({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'resources/views'));

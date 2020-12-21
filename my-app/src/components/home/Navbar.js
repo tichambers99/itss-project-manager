@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
 import { UserOutlined, FolderOpenOutlined, LogoutOutlined, BarsOutlined } from '@ant-design/icons';
+
+import { LoginContext } from '../contexts/login';
 
 const { Header } = Layout;
 const { Search } = Input;
 
-function handleMenuClick(e) {
-  alert('Click on menu item.');
-}
-
-const menu = (
-  <Menu onClick={handleMenuClick} className="ava-dropdown">
-    <Menu.Item key="1" icon={<UserOutlined />}>
-      Profile
-    </Menu.Item>
-    <Menu.Item key="2" icon={<FolderOpenOutlined />}>
-      Project
-    </Menu.Item>
-    <Menu.Item key="3" icon={<LogoutOutlined />}>
-      Logout
-    </Menu.Item>
-  </Menu>
-);
+const axios = require('axios')
 
 const Navbar = (props) => {
+  const [isLogin, setIsLogin] = useContext(LoginContext);
   const [visible, setVisible] = useState(false);
   const [sidebarHide, setSidebarHide] = useState(true);
   // let sidebarHide = false;
@@ -45,6 +32,39 @@ const Navbar = (props) => {
       props.onNavbar(!sidebarHide)
     // }
   }
+
+  const handleMenuClick = (e) => {
+    if (e.key === '3') {
+      axios.get('http://localhost:8000/auth/log-out',
+        {
+          withCredentials: true,
+          credentials: 'include'
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            setIsLogin(false);
+            window.location.href = '/sign-in';
+          }
+        })
+        .catch((err) => {
+          alert(err);
+        })
+    }
+  }
+
+  const menu = (
+    <Menu onClick={handleMenuClick} className="ava-dropdown">
+      <Menu.Item key="1" icon={<UserOutlined />}>
+        Profile
+      </Menu.Item>
+      <Menu.Item key="2" icon={<FolderOpenOutlined />}>
+        Project
+      </Menu.Item>
+      <Menu.Item key="3" icon={<LogoutOutlined />}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Header className="site-layout-background">
