@@ -7,6 +7,7 @@ router.get('/', createController.index)
 router.post('/createProject', createController.createProject)
 router.get('/:id/createTask', createController.indexCreateTask)
 router.post('/:id/createTask', createController.createTask)
+router.get('/:idproject/:idtask', createController.showTask)
 
 
 module.exports = router;

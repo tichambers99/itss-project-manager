@@ -13,6 +13,7 @@ Project.prototype = {
             callback(result);
         });
     },
+    // show all task
     getTask: function(projectID, callback) {
         sql.query("Select task.id,task.name,task.status,task.introduction,task.deadline,task.deleted,task.created_date from task inner join project on project.id = task.project_id where project.id = ?", [projectID], function(err, result) {
             if (err) throw err
@@ -33,10 +34,16 @@ Project.prototype = {
             if (err) throw err
             callback(result);
         })
+    },
+    // show task by idtask
+    showTask: function(projectID,taskID,callback){
+        sql.query("SELECT task.id, task.name, task.status, task.introduction, task.deadline, task.deleted, task.created_date FROM task INNER JOIN project on project.id = task.project_id WHERE project.id =? AND task.id= ?",[projectID,taskID],function(err,result){
+            if(err) throw err;
+            callback(result);
+        } )
     }
 }
 
 
 
-module.exports = Project;
 module.exports = Project;

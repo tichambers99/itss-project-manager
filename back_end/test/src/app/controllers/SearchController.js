@@ -8,10 +8,20 @@ class SearchController{
         res.render('./search')
     }
 
-    searchTask(req, res){
+    searchProject(req, res){
         if (req.signedCookies.userId){
-            console.log("OK");
-
+            search.searchProject(req.body, req.signedCookies.userId, function(result){
+                if(result){
+                    res.json({
+                        message: 'Found',
+                        result: result
+                    })
+                } else{
+                    res.json({
+                        message: 'Cannot find this project'
+                    })
+                }
+            })
         }
     }
 }

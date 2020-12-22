@@ -4,7 +4,6 @@ const user = new User()
 class UserController{
     view(req, res){
         var id = req.params.id;
-        console.log(id);
         if(req.signedCookies.userId){
             user.findUserbyId(id, function(result){
                 if (result) {
@@ -28,17 +27,23 @@ class UserController{
     }
 
     editInfor(req, res){
-            if(req.signedCookies.userId){
-                user.updateInfor(req.body, req.signedCookies.userId, function(result){
-                    if (result) {
-                        return res.json({ message: "Update success" })
-                    } else {
-                        return res.json({ message: "Failed to update" })
-                    }
-                })
-            } else{
-                return res.json({ message: "You need login to update" })
-            }
+        if(req.signedCookies.userId){
+            user.updateInfor(req.body, function(){
+                res.json({message: 'update success'})
+            })
+        } else{
+            return res.json({ message: "You need login to update" })
+        }
+    }
+
+    changePassword(req, res){
+        if(req.signedCookies.userId){
+            user.changePassword(req.body, req.signedCookies.user, function(){
+                res.json({message: 'Change successed'})
+            })
+        } else{
+            return res.json({ message: "You need login to update" })
+        }
     }
 }
 

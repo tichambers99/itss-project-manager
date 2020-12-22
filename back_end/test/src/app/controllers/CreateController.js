@@ -29,6 +29,23 @@ class CreateController {
             }
 
         }
+    
+        showTask(req,res){
+            if(req.params){
+                project.showTask(req.params.idproject,req.params.idtask,function(result){
+                    if(result){
+                        return res.json({
+                            result : result
+                        })
+                    }
+                    else{
+                        return res.json({
+                            message: "Error"
+                        })
+                    }
+                })
+            }
+        }
         //  POST:http://localhost:3000/create/idProject
     createTask(req, res) {
         if (req.body) {

@@ -1,0 +1,24 @@
+<div class="form-input mt-4">
+
+  {{#if errors}}
+<div class="alert alert-primary" role="alert">
+  Error
+</div>
+
+  {{/if}}
+  <h1>Comment</h1>
+  <form method="POST" >
+      <div class="form-group">
+        <div class="input-group mb-3">
+            <input type="text" name='title' class="form-control" placeholder="title">
+            <input type="text" name='content' class="form-control" placeholder="content">
+            <input type="text" name='date' class="form-control" placeholder="date">
+            <input type="text" name='deleted' class="form-control" placeholder="deleted">
+            <input type="text" name='user_id' class="form-control" placeholder="user_id">
+            <input type="text" name='task_id' class="form-control" placeholder="task_id">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="submit">Comment</button>
+            </div>
+        </div>
+    </div>
+</form>
