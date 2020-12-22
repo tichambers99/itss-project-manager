@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Layout, Row, Col } from 'antd';
 import TableInfo from "./TableInfo";
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
   Link
 } from "react-router-dom";
 
