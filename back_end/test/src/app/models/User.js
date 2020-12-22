@@ -39,7 +39,7 @@ User.prototype = {
     },
 
     findUserByIdV2: function (userId, callback){
-        sql.query("Select profiles.avatar,user.username, profiles.date, profiles.email, profiles.phone, profiles.address, profiles.github from profiles join user on user.id = profiles.user_id where user.id = ?", [userId], function(err, result) {
+        sql.query("Select profiles.user_id, profiles.avatar,user.username, profiles.date, profiles.email, profiles.phone, profiles.address, profiles.github from profiles join user on user.id = profiles.user_id where user.id = ?", [userId], function(err, result) {
             if (err) throw err
             callback(result);
         })

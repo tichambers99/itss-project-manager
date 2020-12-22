@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col, Upload, Button } from 'antd';
-import dataUser from '../../fakeData/user.json';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
 
 const axios = require('axios')
 

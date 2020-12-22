@@ -1,6 +1,6 @@
-const { signedCookies } = require('cookie-parser');
 const User = require('../models/User')
 const user = new User()
+
 class UserController{
     view(req, res){
         user.findUserByIdV2(req.signedCookies.userId, function(result){

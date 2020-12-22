@@ -4,6 +4,7 @@ const homeRouter = require('./home')
 const searchRouter = require('./search')
 const userRouter = require('./user')
 const createRouter = require('./create')
+const updateRouter = require('./update')
 
 const authMiddleware = require('../middlewares/auth.middelware')
 
@@ -14,5 +15,6 @@ function route(app) {
     app.use('/project', authMiddleware.requireAuth, homeRouter)
     app.use('/search', authMiddleware.requireAuth, searchRouter);
     app.use('/create', authMiddleware.requireAuth, createRouter)
+    app.use('/update', authMiddleware.requireAuth, updateRouter)
 }
 module.exports = route;

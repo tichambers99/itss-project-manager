@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Layout, Row, Col, Modal, Button } from 'antd';
 
 import Project from './Project';
 import AddTask from './AddTask';
+
+import { UserContext } from '../contexts/user';
+import { UpdateProjectContext } from '../contexts/update';
 
 const { Content } = Layout;
 const axios = require('axios')
@@ -17,6 +20,8 @@ const colRes = {
 const ContentHome = () => {
   const [projects, setProjects] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [user, setUser] = useContext(UserContext);
+  const [updateProject, setUpdateProject] = useContext(UpdateProjectContext);
 
   const handleOk = () => {
     setIsModalVisible(false);
@@ -33,16 +38,30 @@ const ContentHome = () => {
       credentials: 'include'
     })
     .then((res) => {
-      console.log(res)
-      setProjects([...projects, ...res.data.Project]);
+      setProjects([...res.data.Project]);
     })
     .catch((err) => {
       console.log(err);
       setIsModalVisible(true);
       alert(err)
     })
-  }, []);
-  // console.log(projects)
+  }, [updateProject]);
+
+  useEffect( () => {
+    axios.get('http://localhost:8000/users',
+    {
+      withCredentials: true,
+      credentials: 'include'
+    })
+    .then((res) => {
+      setUser(res.data.result[0])
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(err)
+    })
+  }, [])
+  
   return (
     <div>
       <Modal
@@ -66,7 +85,7 @@ const ContentHome = () => {
                 return (
                   <Col key={key} span={6} bordered={true} {...colRes} className="content-col">
                     <Project project={project}/>
-                    <AddTask />
+                    <AddTask projectId={project.id}/>
                   </Col>
                 )
               })

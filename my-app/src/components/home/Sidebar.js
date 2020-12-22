@@ -44,9 +44,6 @@ const Sidebar = (props) => {
           <Menu.Item key="1" icon={<UserOutlined />}>
             Dashboard
           </Menu.Item>
-          <Menu.Item key="2" icon={<TeamOutlined />}>
-            Team
-          </Menu.Item>
           <Menu.Item key="3" icon={<RightCircleOutlined />}>
             About
           </Menu.Item>

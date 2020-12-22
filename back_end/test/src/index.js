@@ -14,7 +14,8 @@ const app = express()
 
 // allow sharing info between backend and frontend
 app.use(cors({ 
-    origin: "http://localhost:3000", 
+    // origin: ["http://localhost:3000", "https://www.mocky.io/v2/5cc8019d300000980a055e76"],
+    origin: true,
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'],
     credentials: true, 
 }));

@@ -11,7 +11,7 @@ const Project = (props) => {
         projectInfo={{
           id: props.project.id,
           name: props.project.name
-        }} 
+        }}
       />
     </div>
   );

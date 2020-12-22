@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col } from 'antd';
 import TableInfo from "./TableInfo";
-import dataUser from '../../fakeData/user.json';
 import {
   BrowserRouter as Router,
   Switch,
