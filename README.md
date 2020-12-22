@@ -19,5 +19,5 @@ thltm project at school
   - run server with command: 
   
         npm start
-  - server will run on: http://localhost:3000/
+  - server will run on: http://localhost:8000/
  

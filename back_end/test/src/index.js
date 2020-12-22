@@ -5,7 +5,8 @@ const morgan = require('morgan')
 const sass = require('node-sass');
 const handlebars = require('express-handlebars');
 const jwt = require('jsonwebtoken');
-const port = 3000
+const cors = require('cors');
+const port = 8000
 
 const route = require('./app/routes/index')
 const db = require('./app/config/db.config')
@@ -13,6 +14,14 @@ const db = require('./app/config/db.config')
 db.connection;
 
 const app = express()
+
+// allow sharing info between backend and frontend
+app.use(cors({ 
+    origin: "http://localhost:3000", 
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'],
+    credentials: true, 
+}));
+
     // logger 
     // app.use(morgan('combined'))
 app.use(express.static(path.join(__dirname, 'public')))
