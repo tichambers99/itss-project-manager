@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col, Upload, Button } from 'antd';
-
 const axios = require('axios')
 
 const { Content } = Layout;
