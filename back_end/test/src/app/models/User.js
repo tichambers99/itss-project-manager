@@ -8,10 +8,7 @@ User.prototype = {
     find: function(user, callback) {
         sql.query("Select * from user where username = ?", [user], function(err, result) {
             if (err) throw err
-
             callback(result[0]);
-
-
         });
     },
     
@@ -41,9 +38,16 @@ User.prototype = {
         })
     },
 
+    findUserByIdV2: function (userId, callback){
+        sql.query("Select profiles.user_id, profiles.avatar,user.username, profiles.date, profiles.email, profiles.phone, profiles.address, profiles.github from profiles join user on user.id = profiles.user_id where user.id = ?", [userId], function(err, result) {
+            if (err) throw err
+            callback(result);
+        })
+    },
+
     updateInfor: function(reqBody, userId,callback){
         //var values =[reqBody.mail, reqBody.date, reqBody.address, reqBody.github]
-        sql.query("Update profiles SET date = ?, email = ?, address = ?, github = ? WHERE user_id = ?", [reqBody.date, reqBody.mail, reqBody.address, reqBody.github, userId],  function(err, result){
+        sql.query("Update profiles SET avatar = ?, date = ?, email = ?, address = ?, github = ?, phone = ? WHERE user_id = ?", [reqBody.avatar, reqBody.date, reqBody.email, reqBody.address, reqBody.github, reqBody.phone, userId],  function(err, result){
             if (err) throw err
 
             callback(result);

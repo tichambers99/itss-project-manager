@@ -1,10 +1,7 @@
 const path = require('path');
 const express = require('express')
 const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
-const sass = require('node-sass');
 const handlebars = require('express-handlebars');
-const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const port = 8000
 
@@ -17,7 +14,8 @@ const app = express()
 
 // allow sharing info between backend and frontend
 app.use(cors({ 
-    origin: "http://localhost:3000", 
+    // origin: ["http://localhost:3000", "https://www.mocky.io/v2/5cc8019d300000980a055e76"],
+    origin: true,
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token', 'Authorization'],
     credentials: true, 
 }));
@@ -30,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json());
 app.use(cookieParser("K2L"));
     // tao ra body_paser de lay duoc du lieu 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.engine('.hbs', handlebars({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'resources/views'));

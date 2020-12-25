@@ -13,21 +13,28 @@ class AuthController {
         const { username, password } = req.body;
         user.find(username, function(result) {
             if (result) {
-                if (password == result.pass) {
+                if (password === result.pass) {
                     var token = jwt.sign(result.username, privateKey);
                     res.cookie("userId", result.id, {
                         signed: true
                     })
+                    res.cookie('jwt', token)
 
-                    return res.status(200).send();
+
+                    return res.status(200).send()
                 }
 
             }
             res.status(500).send("Login failed");
         });
-
     }
 
+    logout(req, res) {
+        res .clearCookie('userId', {domain: 'localhost', path:'/'})
+            .clearCookie('jwt', {domain: 'localhost', path:'/'})
+            .status(200)
+            .send()
+    }
 
 }
 module.exports = new AuthController;

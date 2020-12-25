@@ -3,33 +3,18 @@ const registerRouter = require('./register')
 const homeRouter = require('./home')
 const searchRouter = require('./search')
 const userRouter = require('./user')
-const projectRouter = require('./create')
-var cookieParser = require('cookie-parser')
+const createRouter = require('./create')
+const updateRouter = require('./update')
 
+const authMiddleware = require('../middlewares/auth.middelware')
 
 function route(app) {
-
-    app.use('/sign-in', authRouter);
+    app.use('/auth', authRouter);
     app.use('/users', userRouter);
     app.use('/register', registerRouter);
-    app.use('/', homeRouter)
-    app.use('/search', searchRouter);
-    app.use('/project', projectRouter)
-
-    app.use('/private', (req, res, next) => {
-        try {
-            var token = req.cookies.token;
-            var ketqua = jwt.verify(token, privateKey);
-            if (ketqua) {
-
-                next();
-            }
-        } catch (error) {
-            return res.redirect('/sign-in')
-        }
-    }, (req, res) => {
-        res.json("Wellcome")
-    })
-
+    app.use('/project', authMiddleware.requireAuth, homeRouter)
+    app.use('/search', authMiddleware.requireAuth, searchRouter);
+    app.use('/create', authMiddleware.requireAuth, createRouter)
+    app.use('/update', authMiddleware.requireAuth, updateRouter)
 }
 module.exports = route;

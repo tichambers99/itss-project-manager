@@ -11,36 +11,29 @@ var cookieParser = require('cookie-parser')
 class HomeController {
 
     // Project 
-    showInfomationProject(req, res, next) {
-        if (req.signedCookies.userId) {
-            project.getProject(req.signedCookies.userId, function(result) {
-                if (result) {
-                    return res.json({
-                        Project: result,
-                    })
+    showInfomationProject(req, res) {
+        project.getProject(req.signedCookies.userId, function(result) {
+            if (result) {
+                return res.json({
+                    Project: result,
+                })
 
-                } else {
-                    return res.json("Error")
-                }
-            })
-        } else
-            return res.send("Error")
+            } else {
+                return res.json("Error")
+            }
+        })
     }
 
-    showInfomationTaskofProject(req, res, next) {
-        if (req.signedCookies.userId) {
-            project.getTask(req.params.id, function(result) {
-                if (result) {
-                    return res.json({
-                        Tasks: result
-                    })
-                } else {
-                    return res.json({ message: error })
-                }
-            })
-        } else {
-            return res.send("Error")
-        }
+    showInfomationTaskofProject(req, res) {
+        project.getTask(req.params.id, function(result) {
+            if (result) {
+                return res.json({
+                    Tasks: result
+                })
+            } else {
+                return res.json({ message: error })
+            }
+        })
     }
 }
 
