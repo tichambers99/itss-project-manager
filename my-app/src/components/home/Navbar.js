@@ -61,8 +61,6 @@ const Navbar = (props) => {
     // }
   }
 
-  // console.log(user, newProject)
-
   const handleMenuClick = (e) => {
     if (e.key === '2') {
       axios.get('http://localhost:8000/auth/log-out',
@@ -122,7 +120,7 @@ const Navbar = (props) => {
         <Search placeholder="input search text" enterButton className="search-input" />
         <Dropdown overlay={menu} placement="bottomRight" arrow>
           <div className="avatar">
-            <img src="https://avatars3.githubusercontent.com/u/53306165?s=460&u=706dee5c711d231bedc74f2692893c97be67b164&v=4" />
+            <img src={user ? user.avatar : "https://avatars3.githubusercontent.com/u/53306165?s=460&u=706dee5c711d231bedc74f2692893c97be67b164&v=4"} />
           </div>
         </Dropdown>
       </div>

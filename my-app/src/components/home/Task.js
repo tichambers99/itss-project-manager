@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { Card, Modal, Button, Input, Upload } from 'antd';
-import { CommentOutlined, EllipsisOutlined, BellOutlined, UploadOutlined, PlusOutlined } from '@ant-design/icons';
+import { CommentOutlined, InfoCircleOutlined, BellOutlined, PlusOutlined } from '@ant-design/icons';
 
 import Logo from '../../images/logo.png';
 import { UpdateTaskContext } from '../contexts/update';
+
+const { TextArea } = Input;
 
 const axios = require('axios')
 
@@ -36,6 +38,7 @@ const Task = (props) => {
     })
   }, [updateTask])
 
+  // Handle upload image
   function getBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -62,11 +65,22 @@ const Task = (props) => {
   const handleChange = (({ fileList }) => {
     setFileImg({ fileList })
   });
+  // end handle upload image
 
   const showModal = (e, value) => {
     setKey(value)
     setVisible(true);
   };
+
+  const handleChangeDescrip = (e, taskId) => {
+    const notChangeTasks = tasks.filter(task => task.id !== taskId)
+    let modifyTask = tasks.filter(task => task.id === taskId)
+    modifyTask[0].introduction = e.target.value
+    setTasks([
+      ...notChangeTasks,
+      modifyTask[0]
+    ])
+  }
 
   const handleOk = (e, taskId) => {
     let modifyTask = tasks.filter(task => task.id === taskId)
@@ -98,14 +112,27 @@ const Task = (props) => {
     setVisible(false);
   };
 
-  const handleChangeDescrip = (e, taskId) => {
-    const notChangeTasks = tasks.filter(task => task.id !== taskId)
-    let modifyTask = tasks.filter(task => task.id === taskId)
-    modifyTask[0].introduction = e.target.value
-    setTasks([
-      ...notChangeTasks,
-      modifyTask[0]
-    ])
+  const handleDeleteTask = (e, taskId) => {
+    setLoading(true);    
+    axios.post(`http://localhost:8000/delete/task/${taskId}`,
+    {
+      projectId: props.projectInfo.id
+    },
+    {
+      withCredentials: true,
+      credentials: 'include'
+    })
+    .then((res) => {
+      setUpdateTask(!updateTask)
+      setLoading(false);
+      setVisible(false);
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(err.response);
+      setLoading(false);
+      setVisible(false);
+    })
   }
   
   const { previewVisible, previewImage, fileList, previewTitle } = fileImg;
@@ -123,8 +150,7 @@ const Task = (props) => {
           return (
             <Card
               key={key}
-              className="card"
-              onClick={(e, value=task.id) => showModal(e, value)}
+              className="card"           
               cover={
                 <img
                   alt="task_img"
@@ -132,12 +158,12 @@ const Task = (props) => {
                 />
               }
               actions={[
-                <BellOutlined key="bell"/>,
+                <InfoCircleOutlined key="info" onClick={(e, value=task.id) => showModal(e, value)} />,
                 <CommentOutlined key="comment" />,
-                <EllipsisOutlined key="ellipsis" />,
+                <BellOutlined key="bell"/>,    
               ]}
             >
-              <p>{task.introduction}</p>
+              <p>{task.name}</p>
             </Card>
           )
         })
@@ -154,14 +180,34 @@ const Task = (props) => {
                 <p className="task-member">Member</p>
               </div>
             }
-            onOk={(e, taskId = task.id) => handleOk(e, taskId)}
-            onCancel={() => handleCancel()}
+            footer={
+              <div>
+                <Button 
+                  type="primary" 
+                  onClick={(e, taskId = task.id) => handleOk(e, taskId)}
+                  loading={loading}
+                >
+                  OK
+                </Button>
+                <Button 
+                  danger
+                  onClick={(e, taskId = task.id) => handleDeleteTask(e, taskId)}
+                  loading={loading}
+                >
+                  Delete
+                </Button>
+                <Button onClick={handleCancel}>Cancel</Button>
+              </div>
+            }
+            onCancel={handleCancel}
           >
             <p>{task.introduction && task.introduction}</p>
             <div className="task-description">
               <p className="task-desc-title">Description</p>
-              <Input 
-                size="large" 
+              <TextArea 
+                autoSize
+                autoFocus
+                bordered
                 placeholder="Add description" 
                 onChange={(e, taskId=task.id) => handleChangeDescrip(e, taskId)}
               />
