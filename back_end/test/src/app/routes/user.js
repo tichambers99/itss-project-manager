@@ -4,6 +4,6 @@ var UserController = require('../controllers/UserController');
 
 router.post('/edit', UserController.editInfor)
 router.get('/edit', UserController.viewEditInfor)
-router.get('/:id', UserController.view)
+router.get('/', UserController.view)
 
 module.exports = router;

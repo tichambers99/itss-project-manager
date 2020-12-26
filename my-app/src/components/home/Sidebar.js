@@ -15,6 +15,12 @@ const { Sider } = Layout;
 const Sidebar = (props) => {
   const [collapsed, setCollapsed] = useState(false);
 
+  const handleMenuClick = (e) => {
+    if (e.key === '1') {
+      window.location.href = '/';
+    }
+  }
+
   return (
     <CSSTransition
       in={props.sidebarHide}
@@ -29,12 +35,14 @@ const Sidebar = (props) => {
         onCollapse={() => setCollapsed(!collapsed)}
       >
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+        <Menu 
+          theme="dark" 
+          mode="inline" 
+          defaultSelectedKeys={['1']}
+          onClick={handleMenuClick}
+        >
           <Menu.Item key="1" icon={<UserOutlined />}>
             Dashboard
-          </Menu.Item>
-          <Menu.Item key="2" icon={<TeamOutlined />}>
-            Team
           </Menu.Item>
           <Menu.Item key="3" icon={<RightCircleOutlined />}>
             About

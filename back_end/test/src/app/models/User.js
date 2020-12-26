@@ -7,10 +7,7 @@ function User() {};
     find: function(user = null, callback) {
         sql.query("SELECT * FROM user  WHERE username = ?", [user], function(err, result) {
             if (err) throw err
-
             callback(result[0]);
-
-
         });
     },
     
@@ -40,9 +37,28 @@ function User() {};
         })
     },
 
-    updateInfor: function(reqBody, userId, callback){
+    findUserByIdV2: function (userId, callback){
+        sql.query("Select profiles.user_id, profiles.avatar,user.username, profiles.date, profiles.email, profiles.phone, profiles.address, profiles.github from profiles join user on user.id = profiles.user_id where user.id = ?", [userId], function(err, result) {
+            if (err) throw err
+            callback(result);
+        })
+    },
+
+    updateInfor: function(reqBody, userId,callback){
         //var values =[reqBody.mail, reqBody.date, reqBody.address, reqBody.github]
-        sql.query("UPDATE profiles SET date = ?, email = ?, address = ?, github = ? WHERE user_id = ?", [reqBody.date, reqBody.mail, reqBody.address, reqBody.github, userId],  function(err, result){
+        sql.query("Update profiles SET avatar = ?, date = ?, email = ?, address = ?, github = ?, phone = ? WHERE user_id = ?", [reqBody.avatar, reqBody.date, reqBody.email, reqBody.address, reqBody.github, reqBody.phone, userId],  function(err, result){
+            if (err) throw err
+
+            callback(result);
+        })
+    },
+
+    getMembers: function(projectId, callback) {
+        sql.query(`select DISTINCT user.username, profiles.avatar 
+        from user inner join profiles on user.id = profiles.user_id 
+        inner join user_project on user.id = user_project.user_id 
+        inner join task on user_project.project_id = task.project_id 
+        where task.project_id = ?`, [projectId],  function(err, result){
             if (err) throw err
         })
 

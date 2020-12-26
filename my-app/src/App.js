@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/home/Navbar';
 import ContentHome from './components/home/Content';
@@ -9,7 +9,10 @@ import EditProfilePage from './components/user/EditProfilePage';
 
 import { Layout } from 'antd';
 
-import {LoginContext} from './components/contexts/login';
+import { LoginContext } from './components/contexts/login';
+import { UserContext } from './components/contexts/user';
+import { UpdateProjectContext } from './components/contexts/update';
+import { UpdateTaskContext } from './components/contexts/update';
 
 import './App.css';
 import 'antd/dist/antd.css';
@@ -17,7 +20,10 @@ import './index.css';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  const [sidebarHide, setSideBarHide] = useState(true)
+  const [user, setUser] = useState({});
+  const [updateProject, setUpdateProject] = useState(false);
+  const [updateTask, setUpdateTask] = useState(false);
+  const [sidebarHide, setSideBarHide] = useState(true);
 
   const handleSidebar = (e) => {
     setSideBarHide(e);
@@ -26,40 +32,45 @@ function App() {
   return (
     <Router>
       <LoginContext.Provider value={[isLogin, setIsLogin]}>
-        <div>
-          <Switch>
-            <Route exact path="/sign-in">
-              <Login />
-            </Route>
-            <Route exact path="/">
-              <Layout style={{ minHeight: '100vh' }}>
-                <Sidebar sidebarHide={sidebarHide} />
-                <Layout className="site-layout">
-                  <Navbar onNavbar={(e) => handleSidebar(e)} />
-                  <ContentHome />
-                </Layout>
-              </Layout>
-            </Route>
-            <Route exact path = "/profile">
+        <UserContext.Provider value={[user, setUser]}>
+          <UpdateProjectContext.Provider value={[updateProject, setUpdateProject]}>
+            <UpdateTaskContext.Provider value={[updateTask, setUpdateTask]}>
+                <Switch>
+                  <Route exact path="/sign-in">
+                    <Login />
+                  </Route>
+                      <Route exact path="/">
+                        <Layout style={{ minHeight: '100vh' }}>
+                          <Sidebar sidebarHide={sidebarHide} />
+                          <Layout className="site-layout">
+                            <Navbar onNavbar={(e) => handleSidebar(e)} />
+                            <ContentHome />
+                          </Layout>
+                        </Layout>
+                      </Route>
+                    
+                  <Route exact path="/profile">
                     <Layout>
-                        <Sidebar sidebarHide={sidebarHide}/>
-                        <Layout className = "site-layout" >
-                            <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                            <ProfilePage idUser = "1"/>
-                        </Layout> 
+                      <Sidebar sidebarHide={sidebarHide}/>
+                      <Layout className = "site-layout" >
+                        <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                        <ProfilePage />
+                      </Layout> 
                     </Layout>
-                </Route>
-                <Route exact path = "/profile/edit">
+                  </Route>
+                  <Route exact path="/profile/edit">
                     <Layout>
-                        <Sidebar sidebarHide={sidebarHide}/>
-                        <Layout className = "site-layout" >
-                            <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                            <EditProfilePage idUser = "2"/>
-                        </Layout> 
+                      <Sidebar sidebarHide={sidebarHide}/>
+                      <Layout className = "site-layout" >
+                        <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                        <EditProfilePage />
+                      </Layout> 
                     </Layout>
-                </Route>
-          </Switch>
-        </div>
+                  </Route>
+                </Switch>
+              </UpdateTaskContext.Provider>
+            </UpdateProjectContext.Provider>
+        </UserContext.Provider>
       </LoginContext.Provider>
     </Router>
   );
