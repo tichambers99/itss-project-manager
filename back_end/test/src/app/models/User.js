@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
     //Task object constructor
 function User() {};
 
+User.prototype = {
     find: function(user = null, callback) {
         sql.query("SELECT * FROM user  WHERE username = ?", [user], function(err, result) {
             if (err) throw err

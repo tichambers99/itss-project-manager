@@ -7,35 +7,18 @@ var comment = new Comment();
 class CommentController{
     showComment(req, res){
         var task_id = req.params.task_id
-        // if(req.signedCookies.userId){
-        //     comment.getComment(task_id, function(result){
-        //         res.json({
-        //             message: 'get success',
-        //             result: result
-        //         })
-        //     })
-        // } else{
-        //     res.json({
-        //         message: 'Login to see comment'
-        //     })
-        // }
         comment.getComment(task_id, function(result){
-                    res.json({
-                        message: 'get success',
-                        result: result
-                    })
-                })
+            res.json({
+                message: 'get success',
+                result: result
+            })
+        })
     }
 
     createComment(req, res){
-        console.log(req.body);
-        if(req.signedCookies.userId){
-            comment.create(req.body, function(){
-                res.json({message: 'comment success'})
-            })
-        } else{
-            return res.json({ message: "You need login to create" })
-        }
+        comment.create(req.body, function(){
+            res.json({message: 'comment success'})
+        })
     }
 
     viewEditComment(req, res){
@@ -61,21 +44,9 @@ class CommentController{
     }
 
     deleteComment(req, res){
-        if(req.signedCookies.userId){
-            comment.deleteComment(req.body.commentId, function(){
-                res.json({message: 'delete success'})
-            })
-        } else {
-            res.json({
-                message: 'cannot delete comment'
-            })
-        }
-        // comment.deleteComment(req.body.commentId, function(result){
-        //     console.log(req.body)
-        //     if(result){
-        //         res.json({message:"Successed"})
-        //     }
-        // })
+        comment.deleteComment(req.params.id, function(){
+            res.json({message: 'delete success'})
+        })
     }
 }
 
