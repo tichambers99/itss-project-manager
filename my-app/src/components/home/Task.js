@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { Card, Modal, Button, Input, Upload } from 'antd';
-import { CommentOutlined, InfoCircleOutlined, BellOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Modal, Button, Input, Upload, Popconfirm } from 'antd';
+import { DeleteOutlined, InfoCircleOutlined, BellOutlined, PlusOutlined } from '@ant-design/icons';
 
 import Logo from '../../images/logo.png';
 import { UpdateTaskContext } from '../contexts/update';
+import { UserContext } from '../contexts/user';
 
 const { TextArea } = Input;
 
@@ -14,14 +15,20 @@ const Task = (props) => {
   const [tasks, setTasks] = useState([]);
   const [key, setKey] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [updateTask, setUpdateTask] = useContext(UpdateTaskContext)
+  const [comments, setComments] = useState([]);
   const [fileImg, setFileImg] = useState({
     previewVisible: false,
     previewImage: '',
     previewTitle: '',
     fileList: []
   });
+
+  const inputEl = useRef(null);
+
+  const [updateTask, setUpdateTask] = useContext(UpdateTaskContext)
+  const [user, setUser] = useContext(UserContext)
 
   useEffect(() => {
     axios.get(`http://localhost:8000/project/${props.projectInfo.id}`,
@@ -67,8 +74,18 @@ const Task = (props) => {
   });
   // end handle upload image
 
-  const showModal = (e, value) => {
+  const showModal = async (e, value) => {
     setKey(value)
+    try {
+      const res = await axios.get(`http://localhost:8000/comment/${value}`,
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
+      setComments(res.data.result)
+    } catch (err) {
+      alert(err)
+    }
     setVisible(true);
   };
 
@@ -113,7 +130,7 @@ const Task = (props) => {
   };
 
   const handleDeleteTask = (e, taskId) => {
-    setLoading(true);    
+    setLoadingDelete(true);    
     axios.post(`http://localhost:8000/delete/task/${taskId}`,
     {
       projectId: props.projectInfo.id
@@ -124,15 +141,62 @@ const Task = (props) => {
     })
     .then((res) => {
       setUpdateTask(!updateTask)
-      setLoading(false);
+      setLoadingDelete(false);
       setVisible(false);
     })
     .catch((err) => {
       console.log(err);
       alert(err.response);
-      setLoading(false);
+      setLoadingDelete(false);
       setVisible(false);
     })
+  }
+
+  const handleAddComment = async (e, taskId) => {
+    const newComment = {
+      avatar: user.avatar,
+      content: inputEl.current.state.value,
+      date: new Date(Date.now()).toISOString().slice(0, 10),
+      task_id: taskId,
+      title: "good",
+      username: user.username
+    }
+    setComments([
+      ...comments,
+      newComment
+    ])
+
+    try {
+      const res = await axios.post(`http://localhost:8000/comment/create`,
+      {
+        content: inputEl.current.state.value,
+        date: new Date(Date.now()).toISOString().slice(0, 10),
+        task_id: taskId,
+        title: "good",
+        user_id: user.user_id,
+        deleted: 0
+      },
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
+    } catch (err) {
+      alert(err)
+    }
+  }
+
+  const handleDeleteComment = async (e, commentId) => {
+    const notDeleteComments = comments.filter((comment) => comment.id !== commentId)
+    setComments(notDeleteComments);
+    try {
+      const res = await axios.get(`http://localhost:8000/comment/delete/${commentId}`,
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
+    } catch (err) {
+      alert(err)
+    }
   }
   
   const { previewVisible, previewImage, fileList, previewTitle } = fileImg;
@@ -159,7 +223,6 @@ const Task = (props) => {
               }
               actions={[
                 <InfoCircleOutlined key="info" onClick={(e, value=task.id) => showModal(e, value)} />,
-                <CommentOutlined key="comment" />,
                 <BellOutlined key="bell"/>,    
               ]}
             >
@@ -189,13 +252,19 @@ const Task = (props) => {
                 >
                   OK
                 </Button>
-                <Button 
-                  danger
-                  onClick={(e, taskId = task.id) => handleDeleteTask(e, taskId)}
-                  loading={loading}
+                <Popconfirm
+                  title="Are you sure to delete this task?"
+                  onConfirm={(e, taskId = task.id) => handleDeleteTask(e, taskId)}
+                  okText="Yes"
+                  cancelText="No"
                 >
-                  Delete
-                </Button>
+                  <Button 
+                    danger
+                    loading={loadingDelete}
+                  >
+                    Delete
+                  </Button>
+                </Popconfirm>
                 <Button onClick={handleCancel}>Cancel</Button>
               </div>
             }
@@ -234,18 +303,42 @@ const Task = (props) => {
             </div>
             <div className="task-comment">
               <p className="task-com-title">Comment</p>
-              <div className="user-comment">
-                <div className="user-info">
-                  <div className="user-avatar">
-                    <img src="https://avatars3.githubusercontent.com/u/53306165?s=460&u=706dee5c711d231bedc74f2692893c97be67b164&v=4" alt="avatar" />
-                  </div>
-                  <div className="user-subinfo">
-                    <p className="user-name">Username</p>
-                    <p className="time-comment">5 hours ago</p>
-                  </div>
-                </div>
-                <p>Comment.....</p>
-              </div>
+              {
+                comments ? 
+                comments.map((comment, key) => {
+                  return (
+                    <div className="user-comment" key={key} >
+                      <DeleteOutlined 
+                        className="delete-comment"
+                        onClick={(e, commentId = comment.id) => handleDeleteComment(e, commentId)}
+                      />
+                      <div className="user-info">
+                        <div className="user-avatar">
+                          <img src={comment.avatar ? comment.avatar : Logo} alt="avatar" />
+                        </div>
+                        <div className="user-subinfo">
+                          <p className="user-name">{comment.username}</p>
+                          <p className="time-comment">{comment.date.slice(0, 10)}</p>
+                        </div>
+                      </div>
+                      <p>{comment.content}</p>
+                    </div>
+                  )
+                })
+                :
+                <p>No comment yet</p>
+              }
+              <Input 
+                placeholder="Add a comment.." 
+                ref={inputEl}
+              />
+              <Button 
+                type="primary"
+                style={{ marginTop: 8}}
+                onClick={(e, taskId=task.id) => handleAddComment(e, taskId)}
+              >
+                Add
+              </Button>
             </div>
           </Modal>
         )

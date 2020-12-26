@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Layout, Row, Col, Upload, Button } from 'antd';
+
+import Logo from '../../logo.svg'
+
 const axios = require('axios')
 
 const { Content } = Layout;
@@ -115,15 +118,15 @@ class EditProfilePage extends Component {
     }
     
     render() {
-        const { avatar, username, date, email, phone, address, github } = this.state.user;
         const { user } = this.state;
+        const { avatar, username, date, email, phone, address, github } = user
         
         return (
             <Content>
               <div className="inf-page">
                 <Row>
-                    <Col span={6} offset={2} className="text-center">
-                        { avatar && <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={user.avatar} data-original-title="Usuario" /> }
+                    <Col span={6} offset={2} className="text-center"> 
+                        <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={avatar ? avatar : Logo} data-original-title="Usuario" />
                         <Upload fileList={this.state.selectedFileList} customRequest={dummyRequest}
                          onChange={this.onChange} >
                             <Button >Choose File</Button>

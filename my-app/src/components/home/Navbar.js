@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
 import { UserOutlined, LogoutOutlined, BarsOutlined } from '@ant-design/icons';
 
+import Logo from '../../logo.svg'
+
 import { UserContext } from '../contexts/user';
 import { LoginContext } from '../contexts/login';
 import { UpdateProjectContext } from '../contexts/update';
@@ -120,7 +122,7 @@ const Navbar = (props) => {
         <Search placeholder="input search text" enterButton className="search-input" />
         <Dropdown overlay={menu} placement="bottomRight" arrow>
           <div className="avatar">
-            <img src={user ? user.avatar : "https://avatars3.githubusercontent.com/u/53306165?s=460&u=706dee5c711d231bedc74f2692893c97be67b164&v=4"} />
+            <img src={user.avatar ? user.avatar: Logo} />
           </div>
         </Dropdown>
       </div>

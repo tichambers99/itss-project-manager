@@ -20,6 +20,6 @@ function route(app) {
     app.use('/create', authMiddleware.requireAuth, createRouter)
     app.use('/update', authMiddleware.requireAuth, updateRouter)
     app.use('/delete', authMiddleware.requireAuth, deleteRouter)
-    app.use('/comment/', commentRouter);
+    app.use('/comment', commentRouter);
 }
 module.exports = route;

@@ -37,7 +37,7 @@ const Project = (props) => {
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <p>{name}</p>
         <Popconfirm
-          title="Are you sure to delete this task?"
+          title="Are you sure to delete this project?"
           onConfirm={handleConfirm}
           okText="Yes"
           cancelText="No"

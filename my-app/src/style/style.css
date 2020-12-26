@@ -163,6 +163,18 @@
   margin-bottom: 2rem;
 }
 
+.ant-modal-body .task-comment .user-comment {
+  position: relative;
+}
+
+.ant-modal-body .task-comment .user-comment .delete-comment {
+  position: absolute;
+  top: 5%;
+  left: 100%;
+  color: red;
+  cursor: pointer;
+}
+
 .ant-modal-body .task-comment .user-info {
   display: flex;
   align-items: center;

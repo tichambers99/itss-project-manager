@@ -5,6 +5,8 @@ import {
   Link
 } from "react-router-dom";
 
+import Logo from '../../logo.svg'
+
 const { Content } = Layout;
 const axios = require('axios')
 
@@ -41,7 +43,7 @@ class ProfilePage extends Component {
         <div className="inf-page">
           <Row>
             <Col span={6} offset={2} className="text-center">
-              { user && <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={user.avatar} data-original-title="Usuario" />} 
+              <img alt="user_img" className="img-thumbnail isTooltip sizeAva" src={user.avatar ? user.avatar : Logo} data-original-title="Usuario" />
             </Col>
             <Col span={13}>
               <Row>

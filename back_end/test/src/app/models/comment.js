@@ -1,9 +1,7 @@
 'user strict';
 const sql = require("./db.js");
 
-function Comment(){
-
-}
+function Comment(){}
 
 Comment.prototype = {
     create: function(body, callback){
@@ -15,7 +13,10 @@ Comment.prototype = {
     },
 
     getComment: function(taskId, callback){
-        sql.query('SELECT * FROM comment WHERE task_id =? AND deleted = 0', [taskId], function(err, result){
+        sql.query(`SELECT comment.id, comment.content, comment.title, comment.date, comment.task_id, user.username, avatar
+        FROM (comment join user on comment.user_id = user.id)
+            join profiles p on user.id = p.user_id
+        WHERE task_id = ? AND comment.deleted = 0`, [taskId], function(err, result){
             if(err) throw err;
             callback(result);
         })
