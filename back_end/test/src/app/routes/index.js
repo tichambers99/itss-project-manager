@@ -3,6 +3,8 @@ const registerRouter = require('./register')
 const homeRouter = require('./home')
 const searchRouter = require('./search')
 const userRouter = require('./user')
+const commentRouter = require('./comment')
+var cookieParser = require('cookie-parser')
 const createRouter = require('./create')
 const updateRouter = require('./update')
 const deleteRouter = require('./delete')
@@ -18,5 +20,6 @@ function route(app) {
     app.use('/create', authMiddleware.requireAuth, createRouter)
     app.use('/update', authMiddleware.requireAuth, updateRouter)
     app.use('/delete', authMiddleware.requireAuth, deleteRouter)
+    app.use('/comment/', commentRouter);
 }
 module.exports = route;

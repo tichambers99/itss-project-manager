@@ -4,9 +4,8 @@ const bcrypt = require('bcrypt')
     //Task object constructor
 function User() {};
 
-User.prototype = {
-    find: function(user, callback) {
-        sql.query("Select * from user where username = ?", [user], function(err, result) {
+    find: function(user = null, callback) {
+        sql.query("SELECT * FROM user  WHERE username = ?", [user], function(err, result) {
             if (err) throw err
             callback(result[0]);
         });
@@ -15,7 +14,7 @@ User.prototype = {
     create: function(body, callback) {
         let pwd = body.password
         body.password = bcrypt.hashSync(pwd, 10);
-        sql.query("Insert into user(username, pass, deleted) values (?,?,?)", [body.username, body.password, 0], function(err, result) {
+        sql.query("INSERT INTO user(username, password) VALUES (?,?)", [body.email, body.password], function(err, result) {
             if (err) throw err
             callback(result)
         });
@@ -30,7 +29,7 @@ User.prototype = {
     },
 
     findUserbyId: function(userId, callback){
-        sql.query("Select * from profiles where user_id = ?", [userId], function(err, result) {
+        sql.query("Select user.username, profiles.date, profiles.email, profiles.address, profiles.github from profiles INNER JOIN user ON profiles.user_id = user.id WHERE profiles.user_id = ?", [userId], function(err, result) {
             if (err) throw err
 
             callback(result[0]);
@@ -61,10 +60,23 @@ User.prototype = {
         inner join task on user_project.project_id = task.project_id 
         where task.project_id = ?`, [projectId],  function(err, result){
             if (err) throw err
+        })
 
+        sql.query("UPDATE user SET username = ? WHERE id = ?", [reqBody.username, userId], function(err, result){
+            if (err) throw err;
+        })
+        callback();
+    },
+
+    changePassword: function(reqBody, userId, callback){
+        sql.query("UPDATE user SET pass =? WHERE id = ?", [reqBody.password, userId], function(err, result){
+            if(err) throw err;
+            console.log(result);
             callback(result);
         })
     }
+
+    
 }
 
 

@@ -12,7 +12,6 @@ class UserController{
             }
             return res.send("Cannot find");
         })
-
     }
 
     viewEditInfor(req, res){
@@ -20,13 +19,23 @@ class UserController{
     }
 
     editInfor(req, res){
-        user.updateInfor(req.body, req.signedCookies.userId, function(result){
+       user.updateInfor(req.body, req.signedCookies.userId, function(result){
             if (result) {
                 return res.status(200).json({ message: "Update success" })
             } else {
                 return res.status(500).json({ message: "Failed to update" })
             }
-        })
+        }) 
+    }
+
+    changePassword(req, res){
+        if(req.signedCookies.userId){
+            user.changePassword(req.body, req.signedCookies.user, function(){
+                res.json({message: 'Change successed'})
+            })
+        } else{
+            return res.json({ message: "You need login to update" })
+        }
     }
 }
 
