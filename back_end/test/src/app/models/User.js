@@ -52,6 +52,18 @@ User.prototype = {
 
             callback(result);
         })
+    },
+
+    getMembers: function(projectId, callback) {
+        sql.query(`select DISTINCT user.username, profiles.avatar 
+        from user inner join profiles on user.id = profiles.user_id 
+        inner join user_project on user.id = user_project.user_id 
+        inner join task on user_project.project_id = task.project_id 
+        where task.project_id = ?`, [projectId],  function(err, result){
+            if (err) throw err
+
+            callback(result);
+        })
     }
 }
 

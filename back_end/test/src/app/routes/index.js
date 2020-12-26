@@ -5,6 +5,7 @@ const searchRouter = require('./search')
 const userRouter = require('./user')
 const createRouter = require('./create')
 const updateRouter = require('./update')
+const deleteRouter = require('./delete')
 
 const authMiddleware = require('../middlewares/auth.middelware')
 
@@ -16,5 +17,6 @@ function route(app) {
     app.use('/search', authMiddleware.requireAuth, searchRouter);
     app.use('/create', authMiddleware.requireAuth, createRouter)
     app.use('/update', authMiddleware.requireAuth, updateRouter)
+    app.use('/delete', authMiddleware.requireAuth, deleteRouter)
 }
 module.exports = route;

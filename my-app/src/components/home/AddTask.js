@@ -26,7 +26,6 @@ const AddTask = (params) => {
   const createTask = () => {
     setVisibleClass('add-task-container-hidden');
     setText('add task');
-    console.log(newTask)
     axios.post('http://localhost:8000/create/task',
     {
       ...newTask
