@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Popconfirm, Button } from 'antd';
+import { Popconfirm, Button, Select } from 'antd';
 
 import Task from './Task';
 import { UserContext } from '../contexts/user';
 import { UpdateProjectContext } from '../contexts/update';
 
+const { Option } = Select;
 const axios = require('axios');
 
 const Project = (props) => {
   const [members, setMembers] = useState([]);
   const [allMembers, setAllMembers] = useState([]);
+  const [option, setOption] = useState(-1);
   const [updateProject, setUpdateProject] = useContext(UpdateProjectContext);
   const [user, setUser] = useContext(UserContext)
   const { id, name, leader_id } = props.project
@@ -77,8 +79,18 @@ const Project = (props) => {
           <Button danger >Delete</Button>
         </Popconfirm>
       </div>
+      <Select 
+        defaultValue={-1} 
+        style={{ width: 120 }} 
+        onChange={(value) => setOption(value)}
+      >
+        <Option value={-1}>All</Option>
+        <Option value={1}>Done</Option>
+        <Option value={0}>Not done</Option>
+      </Select>
 
-      <Task 
+      <Task
+        option={option}
         projectInfo={{
           id: id,
           name: name,

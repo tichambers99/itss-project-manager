@@ -40,6 +40,17 @@ const Task = (props) => {
   const [user, setUser] = useContext(UserContext)
 
   const { id, name, leader_id, members, allMembers } = props.projectInfo
+  const { option } = props;
+  let filterTasks = []
+  if (option === 1) {
+    filterTasks = tasks.filter((task) => task.status === 1)
+  }
+  else if (option === 0) {
+    filterTasks = tasks.filter((task) => task.status === 0)
+  } 
+  else {
+    filterTasks = tasks;
+  }
 
   useEffect(() => {
     (async () => {
@@ -49,6 +60,7 @@ const Task = (props) => {
           withCredentials: true,
           credentials: 'include'
         })
+        console.log(res.data.Tasks)
         setTasks([...res.data.Tasks])
       } catch (err) {
         alert(err)
@@ -296,7 +308,7 @@ const Task = (props) => {
   return (
     <div>
       {
-        tasks.map((task, key) => {
+        filterTasks.map((task, key) => {
           return (
             <Card
               key={key}
@@ -318,7 +330,7 @@ const Task = (props) => {
         })
       }
       {
-        tasks.filter(task => task.id === modalKey.current).map((task, key) => 
+        filterTasks.filter(task => task.id === modalKey.current).map((task, key) => 
           <Modal
             key={key}
             ref={modalKey}
