@@ -1,3 +1,6 @@
+li {
+  list-style: none;
+}
 /* Sidebar */
 .logo {
   height: 32px;
@@ -144,6 +147,21 @@
 .ant-modal-header .task-title .task-member {
   text-transform: uppercase;
   color: #787878;
+}
+
+.ant-modal-header .task-title div.member {
+  text-align: right;
+}
+.ant-modal-header .task-title div.member img, ul.all-members li img {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  max-width: 100%;
+  border-radius: 50%;
+}
+.ant-modal-header .task-title div.member .member-icon {
+  cursor: pointer;
+  font-size: 24px;
 }
 
 .ant-modal-body {
