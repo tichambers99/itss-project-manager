@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import { Input, Space, Button, Modal, Form, Checkbox, Select, Tooltip } from 'antd';
-import { Link, Redirect, Route } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { UserOutlined, LockOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import logo from '../../images/logo.png';
 
@@ -112,12 +112,12 @@ const Login = () => {
 
   return (
     <div className="login">
-      <Route>
+      
         {
           !isLogin ? <Redirect to="/sign-in" /> : <Redirect to="/" />
         }
-      </Route>
-        <img src={logo} /> 
+      
+        <img src={logo} alt="Logo"/> 
       <Space direction="vertical" className="form-login">
         <Form
           name="normal_login"
@@ -297,7 +297,7 @@ const Login = () => {
                   {...tailFormItemLayout}
                 >
                   <Checkbox>
-                    I have read the <a href="">agreement</a>
+                    I have read the <a href="#">agreement</a>
                   </Checkbox>
                 </Form.Item>
                 <Form.Item {...tailFormItemLayout} style={{marginTop: "1rem"}}>

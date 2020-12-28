@@ -26,6 +26,22 @@ Project.prototype = {
             })
         })
     },
+    getProgress: function(userID, callback) {
+        sql.query(`
+            select B.id, B.name, B.work_counts, B.taskDone
+            from user_project inner join
+            (select project.id, project.name, project.work_counts, count(task.status) as taskDone
+            from project inner join task
+            on project.id = task.project_id
+            where task.status = 1
+            group by project.id) as B
+            On user_project.project_id = B.id
+            where user_project.user_id = ?`, [userID], function(err, result) {
+            if (err) 
+                throw err
+            callback(result);
+        })
+    },
     deleteProject: function(projectId, callback) {
         sql.query("Delete from task WHERE project_id = ?", [projectId],  function(err, result){
             if (err) throw err
@@ -74,7 +90,43 @@ Project.prototype = {
             WHERE project.id = ?`, [body],  function(err, result){
             if (err) throw err
         })
-    }
+    },
+    getMember: function(projectId, callback) {
+        sql.query(
+            `Select A.username, A.id, profiles.avatar
+            From profiles
+            inner join (Select user.id,user.username from user inner join (select user_project.user_id from user_project
+            inner join project on user_project.project_id = project.id where project.id = ?) As B
+            on B.user_id = user.id) As A On A.id = profiles.user_id;`,
+            [projectId],  function(err, result){
+            if (err) throw err
+            callback(result);
+        })
+    },
+    getAllMembers: function(callback) {
+        sql.query(
+            `Select A.username, A.id, profiles.avatar
+            From profiles
+            inner join (Select user.id, user.username from user) As A On A.id = profiles.user_id;`,
+            function(err, result){
+            if (err) throw err
+            callback(result);
+        })
+    },
+    addMember: function(body, callback) {
+        const values = [body.joined_date, body.leader, body.user_id, body.project_id]
+        sql.query(
+            `insert into user_project (joined_date, leader, user_id, project_id) values (?, ?, ?, ?) `, values, function(err, result){
+            if (err) throw err
+            callback(result);
+        })
+    },
+    removeMember: function(userId, callback) {
+        sql.query("Delete from user_project WHERE user_id = ?", [userId],  function(err, result){
+            if (err) throw err
+            callback(result);
+        })
+    },
 }
 
 module.exports = Project;

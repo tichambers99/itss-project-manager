@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { Card, Modal, Button, Input, Upload, Popconfirm } from 'antd';
-import { DeleteOutlined, InfoCircleOutlined, BellOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Modal, Button, Input, Upload, Popconfirm, Tooltip, Popover } from 'antd';
+import { 
+  DeleteOutlined, 
+  InfoCircleOutlined, 
+  BellOutlined, 
+  PlusOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined
+} from '@ant-design/icons';
 
 import Logo from '../../images/logo.png';
-import { UpdateTaskContext } from '../contexts/update';
+import { UpdateProjectContext, UpdateTaskContext } from '../contexts/update';
 import { UserContext } from '../contexts/user';
 
 const { TextArea } = Input;
@@ -13,7 +20,7 @@ const axios = require('axios')
 
 const Task = (props) => {
   const [tasks, setTasks] = useState([]);
-  const [key, setKey] = useState(0);
+  // const [key, setKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -26,24 +33,40 @@ const Task = (props) => {
   });
 
   const inputEl = useRef(null);
+  const modalKey = useRef(null)
 
   const [updateTask, setUpdateTask] = useContext(UpdateTaskContext)
+  const [updateProject, setUpdateProject] = useContext(UpdateProjectContext);
   const [user, setUser] = useContext(UserContext)
 
+  const { id, name, leader_id, members, allMembers } = props.projectInfo
+  const { option } = props;
+  let filterTasks = []
+  if (option === 1) {
+    filterTasks = tasks.filter((task) => task.status === 1)
+  }
+  else if (option === 0) {
+    filterTasks = tasks.filter((task) => task.status === 0)
+  } 
+  else {
+    filterTasks = tasks;
+  }
+
   useEffect(() => {
-    axios.get(`http://localhost:8000/project/${props.projectInfo.id}`,
-    {
-      withCredentials: true,
-      credentials: 'include'
-    })
-    .then((res) => {
-      setTasks([...res.data.Tasks])
-    })
-    .catch((err) => {
-      console.log(err);
-      alert(err.response);
-    })
-  }, [updateTask])
+    (async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/project/task/${id}`,
+        {
+          withCredentials: true,
+          credentials: 'include'
+        })
+        console.log(res.data.Tasks)
+        setTasks([...res.data.Tasks])
+      } catch (err) {
+        alert(err)
+      }
+    })()
+  }, [updateTask, id])
 
   // Handle upload image
   function getBase64(file) {
@@ -75,14 +98,15 @@ const Task = (props) => {
   // end handle upload image
 
   const showModal = async (e, value) => {
-    setKey(value)
+    // setKey(value)
+    modalKey.current = value
     try {
       const res = await axios.get(`http://localhost:8000/comment/${value}`,
       {
         withCredentials: true,
         credentials: 'include'
       })
-      setComments(res.data.result)
+      res.data.result.length !== 0 && setComments(res.data.result)
     } catch (err) {
       alert(err)
     }
@@ -133,7 +157,7 @@ const Task = (props) => {
     setLoadingDelete(true);    
     axios.post(`http://localhost:8000/delete/task/${taskId}`,
     {
-      projectId: props.projectInfo.id
+      projectId: id
     },
     {
       withCredentials: true,
@@ -167,7 +191,7 @@ const Task = (props) => {
     ])
 
     try {
-      const res = await axios.post(`http://localhost:8000/comment/create`,
+      await axios.post(`http://localhost:8000/comment/create`,
       {
         content: inputEl.current.state.value,
         date: new Date(Date.now()).toISOString().slice(0, 10),
@@ -189,11 +213,43 @@ const Task = (props) => {
     const notDeleteComments = comments.filter((comment) => comment.id !== commentId)
     setComments(notDeleteComments);
     try {
-      const res = await axios.get(`http://localhost:8000/comment/delete/${commentId}`,
+      await axios.get(`http://localhost:8000/comment/delete/${commentId}`,
       {
         withCredentials: true,
         credentials: 'include'
       })
+    } catch (err) {
+      alert(err)
+    }
+  }
+
+  const handleAddMember = async (e, userId) => {
+    try {
+      await axios.post(`http://localhost:8000/project/member/add`,
+      {
+        joined_date: new Date(Date.now()).toISOString().slice(0, 10),
+        leader: leader_id,
+        user_id: userId,
+        project_id: id
+      },
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
+      setUpdateProject(!updateProject);
+    } catch (err) {
+      alert(err)
+    }
+  }
+
+  const handleRemoveMember = async (e, userId) => {
+    try {
+      await axios.get(`http://localhost:8000/project/member/remove/${userId}`,
+      {
+        withCredentials: true,
+        credentials: 'include'
+      })
+      setUpdateProject(!updateProject);
     } catch (err) {
       alert(err)
     }
@@ -207,10 +263,52 @@ const Task = (props) => {
     </div>
   );
 
+  let notMembers = []
+  let isMembers = []
+  for (const allMember of allMembers) {
+    let flag = true;
+    for (const member of members) {
+      if (allMember.id === member.id) {
+        flag = false;
+        isMembers.push(allMember)
+        break;
+      }
+    }
+    flag && notMembers.push(allMember)
+  }
+
+  const popOverLeftMembers = (
+    <ul className="all-members" style={{ marginBottom: 0 }}>
+      {
+        notMembers.map((member, key) => 
+          <li key={key} onClick={(e, userId = member.id) => handleAddMember(e, userId)}>
+            <Tooltip title={member.username}>
+              <img alt="avatar" src={member.avatar ? member.avatar : Logo} />
+            </Tooltip>
+          </li>
+        )
+      }
+    </ul>
+  )
+
+  const popOverIsMembers = (
+    <ul className="all-members" style={{ marginBottom: 0 }}>
+      {
+        isMembers.map((member, key) => 
+          <li key={key} onClick={(e, userId = member.id) => handleRemoveMember(e, userId)}>
+            <Tooltip title={member.username}>
+              <img alt="avatar" src={member.avatar ? member.avatar : Logo} />
+            </Tooltip>
+          </li>
+        )
+      }
+    </ul>
+  )
+
   return (
     <div>
       {
-        tasks.map((task, key) => {
+        filterTasks.map((task, key) => {
           return (
             <Card
               key={key}
@@ -232,15 +330,33 @@ const Task = (props) => {
         })
       }
       {
-        tasks.filter(task => task.id === key).map((task, key) => 
+        filterTasks.filter(task => task.id === modalKey.current).map((task, key) => 
           <Modal
             key={key}
+            ref={modalKey}
             visible={visible}
             title={
               <div className="task-title"> 
-                <h3>{ task.name }</h3>
-                <p className="task-subtitle">{props.projectInfo.name}</p>
+                <h3>Task: { task.name }</h3>
+                <p className="task-subtitle">Project: {name}</p>
                 <p className="task-member">Member</p>
+                <div className="member">
+                  {
+                    members.map((member, key) => {
+                      return (
+                        <Tooltip title={member.username} key={key}>
+                          <img alt="avatar" src={member.avatar ? member.avatar : Logo} />
+                        </Tooltip>
+                      )
+                    })
+                  }
+                  <Popover content={popOverLeftMembers} title="Members left" trigger="click">
+                    <PlusCircleOutlined className="member-icon" />
+                  </Popover>
+                  <Popover content={popOverIsMembers} title="All members" trigger="click">
+                    <MinusCircleOutlined className="member-icon" />
+                  </Popover>
+                </div>
               </div>
             }
             footer={
@@ -270,9 +386,9 @@ const Task = (props) => {
             }
             onCancel={handleCancel}
           >
-            <p>{task.introduction && task.introduction}</p>
             <div className="task-description">
               <p className="task-desc-title">Description</p>
+              <p>{task.introduction && task.introduction}</p>
               <TextArea 
                 autoSize
                 autoFocus
@@ -304,7 +420,7 @@ const Task = (props) => {
             <div className="task-comment">
               <p className="task-com-title">Comment</p>
               {
-                comments ? 
+                comments.length !== 0 ? 
                 comments.map((comment, key) => {
                   return (
                     <div className="user-comment" key={key} >

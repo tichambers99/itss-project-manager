@@ -13,9 +13,9 @@ User.prototype = {
     },
     
     create: function(body, callback) {
-        let pwd = body.password
+        let pwd = body.password;
         body.password = bcrypt.hashSync(pwd, 10);
-        sql.query("INSERT INTO user(username, password) VALUES (?,?)", [body.email, body.password], function(err, result) {
+        sql.query("INSERT INTO user(username, pass, deleted) VALUES (?,?, ?)", [body.username, body.password, 0], function(err, result) {
             if (err) throw err
             callback(result)
         });
