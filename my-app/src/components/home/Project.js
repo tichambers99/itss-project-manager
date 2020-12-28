@@ -51,6 +51,7 @@ const Project = (props) => {
       alert("Only leader can delete this project!")
     }
     else {
+      
       axios.get(`http://localhost:8000/delete/project/${id}`,
       {
         withCredentials: true,

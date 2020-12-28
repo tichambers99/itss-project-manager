@@ -43,6 +43,10 @@ Project.prototype = {
         })
     },
     deleteProject: function(projectId, callback) {
+        sql.query(`delete from comment where task_id in 
+        (select task.id from task where project_id = ?)`, [projectId],  function(err, result){
+            if (err) throw err
+        })
         sql.query("Delete from task WHERE project_id = ?", [projectId],  function(err, result){
             if (err) throw err
         })
@@ -74,7 +78,7 @@ Project.prototype = {
         })
     },
     updateTask: function(taskId, body, callback) {
-        sql.query("Update task SET introduction = ?, image = ? WHERE id = ?", [body.introduction, body.image, taskId],  function(err, result){
+        sql.query("Update task SET introduction = ?, image = ?, status = ?  WHERE id = ?", [body.introduction, body.image, body.status, taskId],  function(err, result){
             if (err) throw err
             callback(result);
         })

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { Card, Modal, Button, Input, Upload, Popconfirm, Tooltip, Popover } from 'antd';
+import { Card, Modal, Button, Input, Upload, Popconfirm, Tooltip, Popover, Select } from 'antd';
 import { 
   DeleteOutlined, 
   InfoCircleOutlined, 
@@ -15,12 +15,13 @@ import { UpdateProjectContext, UpdateTaskContext } from '../contexts/update';
 import { UserContext } from '../contexts/user';
 
 const { TextArea } = Input;
+const { Option } = Select;
 
 const axios = require('axios')
 
 const Task = (props) => {
   const [tasks, setTasks] = useState([]);
-  // const [key, setKey] = useState(0);
+  const [status, setStatus] = useState(0);
   const [loading, setLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -97,7 +98,6 @@ const Task = (props) => {
   // end handle upload image
 
   const showModal = async (e, value) => {
-    // setKey(value)
     modalKey.current = value
     try {
       const res = await axios.get(`http://localhost:8000/comment/${value}`,
@@ -125,6 +125,7 @@ const Task = (props) => {
   const handleOk = (e, taskId) => {
     let modifyTask = tasks.filter(task => task.id === taskId)
     modifyTask[0].image = fileImg.fileList[0] && fileImg.fileList[0].thumbUrl;
+    modifyTask[0].status = status
 
     setLoading(true);    
     axios.post(`http://localhost:8000/update/task/${taskId}`,
@@ -395,6 +396,17 @@ const Task = (props) => {
                 placeholder="Add description" 
                 onChange={(e, taskId=task.id) => handleChangeDescrip(e, taskId)}
               />
+            </div>
+            <div className="task-status">
+              <p className="change-task-status">Change task's status</p>
+              <Select 
+                defaultValue={task.status} 
+                style={{ width: 120 }} 
+                onChange={(value) => setStatus(value)}
+              >
+                <Option value={1}>Done</Option>
+                <Option value={0}>Not done</Option>
+              </Select>
             </div>
             <div className="task-attachment">
               <p className="task-attach-title">Add attachment</p>
