@@ -60,7 +60,6 @@ const Task = (props) => {
           withCredentials: true,
           credentials: 'include'
         })
-        console.log(res.data.Tasks)
         setTasks([...res.data.Tasks])
       } catch (err) {
         alert(err)

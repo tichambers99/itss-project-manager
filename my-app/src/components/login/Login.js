@@ -43,7 +43,7 @@ const tailFormItemLayout = {
   },
 };
 
-const Login = () => {
+const Login = (props) => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [isLogin, setIsLogin] = useContext(LoginContext);
@@ -114,7 +114,7 @@ const Login = () => {
     <div className="login">
       
         {
-          !isLogin ? <Redirect to="/sign-in" /> : <Redirect to="/" />
+          isLogin && <Redirect from="/sign-in" to="/" />
         }
       
         <img src={logo} alt="Logo"/> 
