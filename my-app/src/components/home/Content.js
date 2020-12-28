@@ -55,6 +55,7 @@ const ContentHome = () => {
     })
     .then((res) => {
       setUser(res.data.result[0])
+      console.log(res.data.result[0])
     })
     .catch((err) => {
       console.log(err);

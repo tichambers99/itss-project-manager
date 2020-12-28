@@ -80,6 +80,9 @@ Project.prototype = {
         })
     },
     deleteTask: function(body, taskId, callback) {
+        sql.query("Delete from comment WHERE task_id = ?", [taskId],  function(err, result){
+            if (err) throw err
+        })
         sql.query("Delete from task WHERE id = ?", [taskId],  function(err, result){
             if (err) throw err
             callback(result);

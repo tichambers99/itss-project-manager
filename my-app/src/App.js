@@ -49,7 +49,7 @@ function App() {
                     <Switch>
                       <Route 
                         exact path="/" 
-                        render={() => isLogin ? <ContentHome /> : <Redirect to="/sign-in" />}
+                        render={() => <ContentHome />}
                       />
 
                       <Route 

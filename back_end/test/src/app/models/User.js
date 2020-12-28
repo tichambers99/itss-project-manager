@@ -15,10 +15,14 @@ User.prototype = {
     create: function(body, callback) {
         let pwd = body.password;
         body.password = bcrypt.hashSync(pwd, 10);
+        const date = new Date(Date.now()).toISOString().slice(0, 10)
         sql.query("INSERT INTO user(username, pass, deleted) VALUES (?,?, ?)", [body.username, body.password, 0], function(err, result) {
             if (err) throw err
             callback(result)
-        });
+            sql.query("INSERT INTO profiles(user_id, date, email, address, github, avatar, phone) VALUES (?, ?, ?, ?, ?, ?, ?)", [result.insertId, date, body.email, "", "", "", body.phoneNumber], function(err, result) {
+                if (err) throw err
+            });
+        });       
     },
 
 
@@ -79,7 +83,5 @@ User.prototype = {
 
     
 }
-
-
 
 module.exports = User;
