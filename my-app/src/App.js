@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/home/Navbar';
 import ContentHome from './components/home/Content';
@@ -17,6 +17,7 @@ import { UpdateTaskContext } from './components/contexts/update';
 import './App.css';
 import 'antd/dist/antd.css';
 import './index.css';
+import ProjectProgress from './components/home/ProjectProgress';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -28,48 +29,59 @@ function App() {
   const handleSidebar = (e) => {
     setSideBarHide(e);
   }
-
+  
   return (
     <Router>
       <LoginContext.Provider value={[isLogin, setIsLogin]}>
         <UserContext.Provider value={[user, setUser]}>
           <UpdateProjectContext.Provider value={[updateProject, setUpdateProject]}>
             <UpdateTaskContext.Provider value={[updateTask, setUpdateTask]}>
-                <Switch>
-                  <Route exact path="/sign-in">
-                    <Login />
-                  </Route>
-                      <Route exact path="/">
-                        <Layout style={{ minHeight: '100vh' }}>
-                          <Sidebar sidebarHide={sidebarHide} />
-                          <Layout className="site-layout">
-                            <Navbar onNavbar={(e) => handleSidebar(e)} />
-                            <ContentHome />
-                          </Layout>
-                        </Layout>
-                      </Route>
+              <Switch>
+                <Route 
+                  path="/sign-in"
+                  component={Login}
+                >  
+                </Route>
+                <Route exact path="/">
+                  <Layout style={{ minHeight: '100vh' }}>
+                    <Sidebar sidebarHide={sidebarHide} currentKey={"1"}/>
+                    <Layout className="site-layout">
+                      <Navbar onNavbar={(e) => handleSidebar(e)} />
+                      <ContentHome />
+                    </Layout>
+                  </Layout>
+                </Route>
+                <Route exact path="/progress">
+                  <Layout style={{ minHeight: '100vh' }}>
+                    <Sidebar sidebarHide={sidebarHide} currentKey={"2"}/>
+                    <Layout className="site-layout">
+                      <Navbar onNavbar={(e) => handleSidebar(e)} />
+                      <ProjectProgress />
+                    </Layout>
+                  </Layout>
+                </Route>
                     
-                  <Route exact path="/profile">
-                    <Layout>
-                      <Sidebar sidebarHide={sidebarHide}/>
-                      <Layout className = "site-layout" >
-                        <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                        <ProfilePage />
-                      </Layout> 
-                    </Layout>
-                  </Route>
-                  <Route exact path="/profile/edit">
-                    <Layout>
-                      <Sidebar sidebarHide={sidebarHide}/>
-                      <Layout className = "site-layout" >
-                        <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                        <EditProfilePage />
-                      </Layout> 
-                    </Layout>
-                  </Route>
-                </Switch>
-              </UpdateTaskContext.Provider>
-            </UpdateProjectContext.Provider>
+                <Route exact path="/profile">
+                  <Layout>
+                    <Sidebar sidebarHide={sidebarHide}/>
+                    <Layout className = "site-layout" >
+                      <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                      <ProfilePage />
+                    </Layout> 
+                  </Layout>
+                </Route>
+                <Route exact path="/profile/edit">
+                  <Layout>
+                    <Sidebar sidebarHide={sidebarHide}/>
+                    <Layout className = "site-layout" >
+                      <Navbar onNavbar={(e) => handleSidebar(e)}/>
+                      <EditProfilePage />
+                    </Layout> 
+                  </Layout>
+                </Route>
+              </Switch>
+            </UpdateTaskContext.Provider>
+          </UpdateProjectContext.Provider>
         </UserContext.Provider>
       </LoginContext.Provider>
     </Router>

@@ -122,7 +122,7 @@ const Navbar = (props) => {
         <Search placeholder="input search text" enterButton className="search-input" />
         <Dropdown overlay={menu} placement="bottomRight" arrow>
           <div className="avatar">
-            <img src={user.avatar ? user.avatar: Logo} />
+            <img src={user && user.avatar ? user.avatar: Logo} alt="Avatar"/>
           </div>
         </Dropdown>
       </div>

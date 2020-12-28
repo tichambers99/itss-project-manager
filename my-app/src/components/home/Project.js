@@ -44,7 +44,7 @@ const Project = (props) => {
         alert(err)
       }
     })()
-  }, [updateProject]);
+  }, [updateProject, id]);
 
   const handleConfirm = () => { 
     if (user.user_id !== leader_id) {

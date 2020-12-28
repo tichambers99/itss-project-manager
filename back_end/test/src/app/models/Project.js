@@ -26,6 +26,22 @@ Project.prototype = {
             })
         })
     },
+    getProgress: function(userID, callback) {
+        sql.query(`
+            select B.id, B.name, B.work_counts, B.taskDone
+            from user_project inner join
+            (select project.id, project.name, project.work_counts, count(task.status) as taskDone
+            from project inner join task
+            on project.id = task.project_id
+            where task.status = 1
+            group by project.id) as B
+            On user_project.project_id = B.id
+            where user_project.user_id = ?`, [userID], function(err, result) {
+            if (err) 
+                throw err
+            callback(result);
+        })
+    },
     deleteProject: function(projectId, callback) {
         sql.query("Delete from task WHERE project_id = ?", [projectId],  function(err, result){
             if (err) throw err

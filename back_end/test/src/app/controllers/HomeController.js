@@ -1,11 +1,6 @@
 const User = require('../models/User');
 const Project = require('../models/Project')
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const user = new User();
 const project = new Project();
-const privateKey = "k2l"
-var cookieParser = require('cookie-parser')
 
 // trang home cua user
 class HomeController {
@@ -32,6 +27,19 @@ class HomeController {
                 })
             } else {
                 return res.json({ message: error })
+            }
+        })
+    }
+
+    getProgress(req, res) {
+        project.getProgress(req.signedCookies.userId, function(result) {
+            if (result) {
+                return res.json({
+                    result: result,
+                })
+
+            } else {
+                return res.json("Error")
             }
         })
     }

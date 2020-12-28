@@ -215,6 +215,11 @@ li {
   font-weight: 500;
 }
 
+/* PROGRESS */
+h4.progress-project-name {
+  margin-top: 1rem;
+}
+
 /* RESPONSIVE */
 .sidebar-enter {
   opacity: 0;

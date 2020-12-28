@@ -66,7 +66,7 @@ const Task = (props) => {
         alert(err)
       }
     })()
-  }, [updateTask])
+  }, [updateTask, id])
 
   // Handle upload image
   function getBase64(file) {
@@ -191,7 +191,7 @@ const Task = (props) => {
     ])
 
     try {
-      const res = await axios.post(`http://localhost:8000/comment/create`,
+      await axios.post(`http://localhost:8000/comment/create`,
       {
         content: inputEl.current.state.value,
         date: new Date(Date.now()).toISOString().slice(0, 10),
@@ -213,7 +213,7 @@ const Task = (props) => {
     const notDeleteComments = comments.filter((comment) => comment.id !== commentId)
     setComments(notDeleteComments);
     try {
-      const res = await axios.get(`http://localhost:8000/comment/delete/${commentId}`,
+      await axios.get(`http://localhost:8000/comment/delete/${commentId}`,
       {
         withCredentials: true,
         credentials: 'include'
@@ -225,7 +225,7 @@ const Task = (props) => {
 
   const handleAddMember = async (e, userId) => {
     try {
-      const res = await axios.post(`http://localhost:8000/project/member/add`,
+      await axios.post(`http://localhost:8000/project/member/add`,
       {
         joined_date: new Date(Date.now()).toISOString().slice(0, 10),
         leader: leader_id,
@@ -244,7 +244,7 @@ const Task = (props) => {
 
   const handleRemoveMember = async (e, userId) => {
     try {
-      const res = await axios.get(`http://localhost:8000/project/member/remove/${userId}`,
+      await axios.get(`http://localhost:8000/project/member/remove/${userId}`,
       {
         withCredentials: true,
         credentials: 'include'
