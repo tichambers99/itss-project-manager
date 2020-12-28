@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Layout, Menu, Dropdown, Button, Input, Modal } from 'antd';
 import { UserOutlined, LogoutOutlined, BarsOutlined } from '@ant-design/icons';
 
@@ -73,24 +74,21 @@ const Navbar = (props) => {
         .then((res) => {
           if (res.status === 200) {
             setIsLogin(false);
-            window.location.href = '/sign-in';
           }
         })
         .catch((err) => {
           alert(err);
         })
-    } else {
-      window.location.href = '/profile';
     }
   }
 
   const menu = (
     <Menu onClick={handleMenuClick} className="ava-dropdown">
       <Menu.Item key="1" icon={<UserOutlined />}>
-        Profile
+        <Link to="/profile" >Profile</Link>
       </Menu.Item>
       <Menu.Item key="2" icon={<LogoutOutlined />}>
-        Logout
+        <Link to="/sign-in" >Log out</Link>
       </Menu.Item>
     </Menu>
   );

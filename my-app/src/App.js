@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navbar from './components/home/Navbar';
 import ContentHome from './components/home/Content';
 import Login from './components/login/Login';
@@ -39,46 +39,37 @@ function App() {
               <Switch>
                 <Route 
                   path="/sign-in"
-                  component={Login}
-                >  
-                </Route>
-                <Route exact path="/">
-                  <Layout style={{ minHeight: '100vh' }}>
-                    <Sidebar sidebarHide={sidebarHide} currentKey={"1"}/>
-                    <Layout className="site-layout">
-                      <Navbar onNavbar={(e) => handleSidebar(e)} />
-                      <ContentHome />
-                    </Layout>
+                  render={() => <Login />}
+                />
+
+                <Layout style={{ minHeight: '100vh' }}>
+                  <Sidebar sidebarHide={sidebarHide} />
+                  <Layout className="site-layout">
+                    <Navbar onNavbar={(e) => handleSidebar(e)} />
+                    <Switch>
+                      <Route 
+                        exact path="/" 
+                        render={() => isLogin ? <ContentHome /> : <Redirect to="/sign-in" />}
+                      />
+
+                      <Route 
+                        path="/progress" 
+                        component={ProjectProgress}
+                      />
+                          
+                      <Switch>
+                        <Route 
+                          exact path="/profile" 
+                          component={ProfilePage}
+                        />
+                        <Route 
+                          path="/profile/edit" 
+                          component={EditProfilePage}
+                        />
+                      </Switch>
+                    </Switch>
                   </Layout>
-                </Route>
-                <Route exact path="/progress">
-                  <Layout style={{ minHeight: '100vh' }}>
-                    <Sidebar sidebarHide={sidebarHide} currentKey={"2"}/>
-                    <Layout className="site-layout">
-                      <Navbar onNavbar={(e) => handleSidebar(e)} />
-                      <ProjectProgress />
-                    </Layout>
-                  </Layout>
-                </Route>
-                    
-                <Route exact path="/profile">
-                  <Layout>
-                    <Sidebar sidebarHide={sidebarHide}/>
-                    <Layout className = "site-layout" >
-                      <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                      <ProfilePage />
-                    </Layout> 
-                  </Layout>
-                </Route>
-                <Route exact path="/profile/edit">
-                  <Layout>
-                    <Sidebar sidebarHide={sidebarHide}/>
-                    <Layout className = "site-layout" >
-                      <Navbar onNavbar={(e) => handleSidebar(e)}/>
-                      <EditProfilePage />
-                    </Layout> 
-                  </Layout>
-                </Route>
+                </Layout>            
               </Switch>
             </UpdateTaskContext.Provider>
           </UpdateProjectContext.Provider>

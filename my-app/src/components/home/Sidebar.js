@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import {
   UserOutlined,
@@ -12,18 +13,9 @@ import '../../style/style.css';
 const { Sider } = Layout;
 
 const Sidebar = (props) => {
-  // const [currentKey, setCurrentKey] = useState('1')
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleMenuClick = (e) => {
-    // setCurrentKey(e.key)
-    if (e.key === '1') {
-      window.location.href = '/';
-    } 
-    else {
-      window.location.href = '/progress'
-    }
-  }
+  const handleMenuClick = (e) => {}
 
   return (
     <CSSTransition
@@ -43,14 +35,13 @@ const Sidebar = (props) => {
           theme="dark" 
           mode="inline"
           defaultSelectedKeys={['1']}
-          selectedKeys={[props.currentKey]}
           onClick={handleMenuClick}
         >
           <Menu.Item key="1" icon={<UserOutlined />}>
-            Dashboard
+            <Link to="/" >Dashboard</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<RightCircleOutlined />}>
-            Progress
+            <Link to="/progress" >Progress</Link>
           </Menu.Item>
         </Menu>
       </Sider>

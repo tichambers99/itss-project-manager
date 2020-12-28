@@ -1,6 +1,6 @@
 module.exports = {
   HOST: "localhost",
-  USER: "username",
-  PASSWORD: "yourpassword",
-  DB: "your_database"
+  USER: "sabo",
+  PASSWORD: "ilookforme",
+  DB: "pro_man"
 };
